@@ -6,3 +6,7 @@
 
 # RUN FILE:
 main.py
+
+# CREDITS:
+Wanderson-Magalhaes / Simple_PySide_Base
+https://github.com/Wanderson-Magalhaes/Simple_PySide_Base
