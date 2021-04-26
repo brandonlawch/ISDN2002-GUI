@@ -197,16 +197,11 @@ class UIFunctions(MainWindow):
     ## ==> UI DEFINITIONS
     ########################################################################
     def uiDefinitions(self):
-        def dobleClickMaximizeRestore(event):
-            # IF DOUBLE CLICK CHANGE STATUS
-            if event.type() == QtCore.QEvent.MouseButtonDblClick:
-                QtCore.QTimer.singleShot(250, lambda: UIFunctions.maximize_restore(self))
 
         ## REMOVE ==> STANDARD TITLE BAR
         if GLOBAL_TITLE_BAR:
             self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
             self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-            self.ui.frame_label_top_btns.mouseDoubleClickEvent = dobleClickMaximizeRestore
         else:
             self.ui.horizontalLayout.setContentsMargins(0, 0, 0, 0)
             self.ui.frame_label_top_btns.setContentsMargins(8, 0, 0, 5)
@@ -241,3 +236,28 @@ class UIFunctions(MainWindow):
     ########################################################################
     ## END - GUI DEFINITIONS
     ########################################################################
+
+    def updateSettingsOnPi(self):
+        global runningCmd, updateStatus
+        if (runningCmd):
+            return
+        runningCmd = True
+
+        updateConfigFile()
+        updateStatus = 'incomplete'
+        self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Settings", None))
+        
+        process = subprocess.Popen(['scp', 'config.txt', 'pi@raspberrypi.local:/home/pi/INNOSPORT/new_config.txt'],creationflags=0x08000000)
+        try:
+            process.wait(5)
+        except subprocess.TimeoutExpired:
+            process.kill()
+        if (process.returncode != 0):
+            updateStatus = 'error'
+            self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Error", None))
+            self.ui.label_001.setStyleSheet("QLabel { color : rgb(255, 15, 140) }")
+        else:
+            updateStatus = 'complete'
+            self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Complete", None))
+            self.ui.label_001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")
+        runningCmd = False

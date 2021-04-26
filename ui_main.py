@@ -698,42 +698,374 @@ class Ui_MainWindow(object):
         self.stackedWidget = QStackedWidget(self.frame_content)
         self.stackedWidget.setObjectName(u"stackedWidget")
         self.stackedWidget.setStyleSheet(u"background: transparent;")
+
+        ########################################################################
+        #                                                                      #
+        ## START    -------------- PAGE_HOME DEFINITION ----------------      ##
+        #                                                                      #
+        ## 001                                                                ##
+        ########################################################################
         self.page_home = QWidget()
         self.page_home.setObjectName(u"page_home")
         self.verticalLayout_10 = QVBoxLayout(self.page_home)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.label_6 = QLabel(self.page_home)
-        self.label_6.setObjectName(u"label_6")
-        font5 = QFont()
-        font5.setFamily(u"Segoe UI")
-        font5.setPointSize(40)
-        self.label_6.setFont(font5)
-        self.label_6.setStyleSheet(u"")
-        self.label_6.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_10.addWidget(self.label_6)
+        self.pushButton_confirm = QPushButton(self.page_home)
+        self.pushButton_confirm.setObjectName(u"pushButton_confirm")
+        self.pushButton_confirm.setMinimumSize(QSize(150, 80))
+        font001 = QFont()
+        font001.setFamily(u"Segoe UI")
+        font001.setPointSize(15)
+        self.pushButton_confirm.setFont(font001)
+        self.pushButton_confirm.setStyleSheet(u"QPushButton {\n"
+"	border: 2px solid rgb(52, 59, 72);\n"
+"	border-radius: 5px;	\n"
+"	background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"	background-color: rgb(57, 65, 80);\n"
+"	border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {	\n"
+"	background-color: rgb(35, 40, 49);\n"
+"	border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        icon001 = QIcon()
+        icon001.addFile(u":/16x16/icons/16x16/cil-cloud-upload.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_confirm.setIcon(icon001)
+        self.pushButton_confirm.clicked.connect(MainWindow.Button)
+        self.verticalLayout_10.addWidget(self.pushButton_confirm)
 
-        self.label = QLabel(self.page_home)
-        self.label.setObjectName(u"label")
-        font6 = QFont()
-        font6.setFamily(u"Segoe UI")
-        font6.setPointSize(14)
-        self.label.setFont(font6)
-        self.label.setAlignment(Qt.AlignCenter)
+        self.pushButton_undo = QPushButton(self.page_home)
+        self.pushButton_undo.setObjectName(u"pushButton_undo")
+        self.pushButton_undo.setMinimumSize(QSize(150, 80))
+        self.pushButton_undo.setFont(font001)
+        self.pushButton_undo.setStyleSheet(u"QPushButton {\n"
+"	border: 2px solid rgb(52, 59, 72);\n"
+"	border-radius: 5px;	\n"
+"	background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"	background-color: rgb(57, 65, 80);\n"
+"	border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {	\n"
+"	background-color: rgb(35, 40, 49);\n"
+"	border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        icon002 = QIcon()
+        icon002.addFile(u":/16x16/icons/16x16/cil-reload.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_undo.setIcon(icon002)
+        self.pushButton_undo.clicked.connect(MainWindow.Button)
+        self.verticalLayout_10.addWidget(self.pushButton_undo)
 
-        self.verticalLayout_10.addWidget(self.label)
+        self.pushButton_restore = QPushButton(self.page_home)
+        self.pushButton_restore.setObjectName(u"pushButton_restore")
+        self.pushButton_restore.setMinimumSize(QSize(150, 80))
+        self.pushButton_restore.setFont(font001)
+        self.pushButton_restore.setStyleSheet(u"QPushButton {\n"
+"	border: 2px solid rgb(52, 59, 72);\n"
+"	border-radius: 5px;	\n"
+"	background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"	background-color: rgb(57, 65, 80);\n"
+"	border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {	\n"
+"	background-color: rgb(35, 40, 49);\n"
+"	border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        icon003 = QIcon()
+        icon003.addFile(u":/16x16/icons/16x16/cil-history.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_restore.setIcon(icon003)
+        self.pushButton_restore.clicked.connect(MainWindow.Button)
+        self.verticalLayout_10.addWidget(self.pushButton_restore)
 
-        self.label_7 = QLabel(self.page_home)
-        self.label_7.setObjectName(u"label_7")
-        font7 = QFont()
-        font7.setFamily(u"Segoe UI")
-        font7.setPointSize(15)
-        self.label_7.setFont(font7)
-        self.label_7.setAlignment(Qt.AlignCenter)
-
-        self.verticalLayout_10.addWidget(self.label_7)
+        self.label_001 = QLabel(self.page_home)
+        self.label_001.setObjectName(u"label_001")
+        font002 = QFont()
+        font002.setFamily(u"Segoe UI")
+        font002.setPointSize(15)
+        self.label_001.setFont(font002)
+        self.label_001.setFixedHeight(40)
+        self.label_001.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_10.addWidget(self.label_001)
 
         self.stackedWidget.addWidget(self.page_home)
+
+        self.pushButton_confirm.setText(QCoreApplication.translate("MainWindow", u" Confirm Settings", None))
+        self.pushButton_undo.setText(QCoreApplication.translate("MainWindow", u" Undo Changes", None))
+        self.pushButton_restore.setText(QCoreApplication.translate("MainWindow", u" Restore Defaults", None))
+        self.label_001.setText(QCoreApplication.translate("MainWindow", u"", None))
+        ########################################################################
+        #                                                                      #
+        ## END    --------------- PAGE_HOME DEFINITION -----------------      ##
+        #                                                                      #
+        ############################## ---/--/--- ##############################
+
+
+        ########################################################################
+        #                                                                      #
+        ## START  -------------- PAGE_LEFTHAND DEFINITION ----------------    ##
+        #                                                                      #
+        ## 1001                                                               ##
+        ########################################################################
+        self.page_leftHand = QWidget()
+        self.page_leftHand.setObjectName(u"page_leftHand")
+        self.verticalLayout_1001 = QVBoxLayout(self.page_leftHand)
+        self.verticalLayout_1001.setObjectName(u"verticalLayout_1001")
+
+        self.label_1001 = QLabel(self.page_leftHand)
+        self.label_1001.setObjectName(u"label_1001")
+        font1001 = QFont()
+        font1001.setFamily(u"Segoe UI")
+        font1001.setPointSize(40)
+        self.label_1001.setFont(font1001)
+        self.label_1001.setStyleSheet(u"")
+        self.label_1001.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_1001.addWidget(self.label_1001)
+
+        self.label_1002 = QLabel(self.page_leftHand)
+        self.label_1002.setObjectName(u"label_1002")
+        font1002 = QFont()
+        font1002.setFamily(u"Segoe UI")
+        font1002.setPointSize(14)
+        self.label_1002.setFont(font1002)
+        self.label_1002.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_1001.addWidget(self.label_1002)
+
+        self.label_1003 = QLabel(self.page_leftHand)
+        self.label_1003.setObjectName(u"label_1003")
+        font1003 = QFont()
+        font1003.setFamily(u"Segoe UI")
+        font1003.setPointSize(15)
+        self.label_1003.setFont(font1003)
+        self.label_1003.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_1001.addWidget(self.label_1003)
+
+        self.stackedWidget.addWidget(self.page_leftHand)
+
+        self.label_1001.setText(QCoreApplication.translate("MainWindow", u"Left Hand", None))
+        self.label_1002.setText(QCoreApplication.translate("MainWindow", u"lefthand2", None))
+        self.label_1003.setText(QCoreApplication.translate("MainWindow", u"Page Index 1", None))
+        ########################################################################
+        #                                                                      #
+        ## END  --------------- PAGE_LEFTHAND DEFINITION -----------------    ##
+        #                                                                      #
+        ############################## ---/--/--- ##############################
+
+
+        ########################################################################
+        #                                                                      #
+        ## START -------------- PAGE_CONTROLLER DEFINITION ----------------   ##
+        #                                                                      #
+        ## 2001                                                               ##
+        ########################################################################
+        self.page_controller = QWidget()
+        self.page_controller.setObjectName(u"page_controller")
+        self.verticalLayout_2001 = QVBoxLayout(self.page_controller)
+        self.verticalLayout_2001.setObjectName(u"verticalLayout_2001")
+
+        self.label_2001 = QLabel(self.page_controller)
+        self.label_2001.setObjectName(u"label_2001")
+        font2001 = QFont()
+        font2001.setFamily(u"Segoe UI")
+        font2001.setPointSize(40)
+        self.label_2001.setFont(font2001)
+        self.label_2001.setStyleSheet(u"")
+        self.label_2001.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_2001.addWidget(self.label_2001)
+
+        self.label_2002 = QLabel(self.page_controller)
+        self.label_2002.setObjectName(u"label_2002")
+        font2002 = QFont()
+        font2002.setFamily(u"Segoe UI")
+        font2002.setPointSize(14)
+        self.label_2002.setFont(font2002)
+        self.label_2002.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_2001.addWidget(self.label_2002)
+
+        self.label_2003 = QLabel(self.page_controller)
+        self.label_2003.setObjectName(u"label_2003")
+        font2003 = QFont()
+        font2003.setFamily(u"Segoe UI")
+        font2003.setPointSize(15)
+        self.label_2003.setFont(font2003)
+        self.label_2003.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_2001.addWidget(self.label_2003)
+
+        self.stackedWidget.addWidget(self.page_controller)
+
+        self.label_2001.setText(QCoreApplication.translate("MainWindow", u"Controller", None))
+        self.label_2002.setText(QCoreApplication.translate("MainWindow", u"controller", None))
+        self.label_2003.setText(QCoreApplication.translate("MainWindow", u"Page Index 2", None))
+        ########################################################################
+        #                                                                      #
+        ## END --------------- PAGE_CONTROLLER DEFINITION -----------------   ##
+        #                                                                      #
+        ############################## ---/--/--- ##############################
+
+
+        ########################################################################
+        #                                                                      #
+        ## START  -------------- PAGE_LEFTLEG DEFINITION ----------------     ##
+        #                                                                      #
+        ## 3001                                                               ##
+        ########################################################################
+        self.page_leftLeg = QWidget()
+        self.page_leftLeg.setObjectName(u"page_leftLeg")
+        self.verticalLayout_3001 = QVBoxLayout(self.page_leftLeg)
+        self.verticalLayout_3001.setObjectName(u"verticalLayout_3001")
+
+        self.label_3001 = QLabel(self.page_leftLeg)
+        self.label_3001.setObjectName(u"label_3001")
+        font3001 = QFont()
+        font3001.setFamily(u"Segoe UI")
+        font3001.setPointSize(40)
+        self.label_3001.setFont(font3001)
+        self.label_3001.setStyleSheet(u"")
+        self.label_3001.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_3001.addWidget(self.label_3001)
+
+        self.label_3002 = QLabel(self.page_leftLeg)
+        self.label_3002.setObjectName(u"label_3002")
+        font3002 = QFont()
+        font3002.setFamily(u"Segoe UI")
+        font3002.setPointSize(14)
+        self.label_3002.setFont(font3002)
+        self.label_3002.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_3001.addWidget(self.label_3002)
+
+        self.label_3003 = QLabel(self.page_leftLeg)
+        self.label_3003.setObjectName(u"label_3003")
+        font3003 = QFont()
+        font3003.setFamily(u"Segoe UI")
+        font3003.setPointSize(15)
+        self.label_3003.setFont(font3003)
+        self.label_3003.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_3001.addWidget(self.label_3003)
+
+        self.stackedWidget.addWidget(self.page_leftLeg)
+
+        self.label_3001.setText(QCoreApplication.translate("MainWindow", u"Left Leg", None))
+        self.label_3002.setText(QCoreApplication.translate("MainWindow", u"Left Leg", None))
+        self.label_3003.setText(QCoreApplication.translate("MainWindow", u"Page Index 3", None))
+        ########################################################################
+        #                                                                      #
+        ## END   --------------- PAGE_LEFTLEG DEFINITION -----------------    ##
+        #                                                                      #
+        ############################## ---/--/--- ##############################
+
+
+        ########################################################################
+        #                                                                      #
+        ## START  -------------- PAGE_RIGHTLEG DEFINITION ----------------    ##
+        #                                                                      #
+        ## 4001                                                               ##
+        ########################################################################
+        self.page_rightLeg = QWidget()
+        self.page_rightLeg.setObjectName(u"page_rightLeg")
+        self.verticalLayout_4001 = QVBoxLayout(self.page_rightLeg)
+        self.verticalLayout_4001.setObjectName(u"verticalLayout_4001")
+
+        self.label_4001 = QLabel(self.page_rightLeg)
+        self.label_4001.setObjectName(u"label_4001")
+        font4001 = QFont()
+        font4001.setFamily(u"Segoe UI")
+        font4001.setPointSize(40)
+        self.label_4001.setFont(font4001)
+        self.label_4001.setStyleSheet(u"")
+        self.label_4001.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_4001.addWidget(self.label_4001)
+
+        self.label_4002 = QLabel(self.page_rightLeg)
+        self.label_4002.setObjectName(u"label_4002")
+        font4002 = QFont()
+        font4002.setFamily(u"Segoe UI")
+        font4002.setPointSize(14)
+        self.label_4002.setFont(font4002)
+        self.label_4002.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_4001.addWidget(self.label_4002)
+
+        self.label_4003 = QLabel(self.page_rightLeg)
+        self.label_4003.setObjectName(u"label_4003")
+        font4003 = QFont()
+        font4003.setFamily(u"Segoe UI")
+        font4003.setPointSize(15)
+        self.label_4003.setFont(font4003)
+        self.label_4003.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_4001.addWidget(self.label_4003)
+
+        self.stackedWidget.addWidget(self.page_rightLeg)
+
+        self.label_4001.setText(QCoreApplication.translate("MainWindow", u"Right Leg", None))
+        self.label_4002.setText(QCoreApplication.translate("MainWindow", u"Right Leg", None))
+        self.label_4003.setText(QCoreApplication.translate("MainWindow", u"Page Index 4", None))
+        ########################################################################
+        #                                                                      #
+        ## END   --------------- PAGE_RIGHTLEG DEFINITION -----------------   ##
+        #                                                                      #
+        ############################## ---/--/--- ##############################
+
+
+        ########################################################################
+        #                                                                      #
+        ## START  -------------- PAGE_profiles DEFINITION ----------------    ##
+        #                                                                      #
+        ## 5001                                                               ##
+        ########################################################################
+        self.page_profiles = QWidget()
+        self.page_profiles.setObjectName(u"page_profiles")
+        self.verticalLayout_5001 = QVBoxLayout(self.page_profiles)
+        self.verticalLayout_5001.setObjectName(u"verticalLayout_5001")
+
+        self.label_5001 = QLabel(self.page_profiles)
+        self.label_5001.setObjectName(u"label_5001")
+        font5001 = QFont()
+        font5001.setFamily(u"Segoe UI")
+        font5001.setPointSize(40)
+        self.label_5001.setFont(font5001)
+        self.label_5001.setStyleSheet(u"")
+        self.label_5001.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_5001.addWidget(self.label_5001)
+
+        self.label_5002 = QLabel(self.page_profiles)
+        self.label_5002.setObjectName(u"label_5002")
+        font5002 = QFont()
+        font5002.setFamily(u"Segoe UI")
+        font5002.setPointSize(14)
+        self.label_5002.setFont(font5002)
+        self.label_5002.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_5001.addWidget(self.label_5002)
+
+        self.label_5003 = QLabel(self.page_profiles)
+        self.label_5003.setObjectName(u"label_5003")
+        font5003 = QFont()
+        font5003.setFamily(u"Segoe UI")
+        font5003.setPointSize(15)
+        self.label_5003.setFont(font5003)
+        self.label_5003.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_5001.addWidget(self.label_5003)
+
+        self.stackedWidget.addWidget(self.page_profiles)
+
+        self.label_5001.setText(QCoreApplication.translate("MainWindow", u"Game Profiles", None))
+        self.label_5002.setText(QCoreApplication.translate("MainWindow", u"game profiles", None))
+        self.label_5003.setText(QCoreApplication.translate("MainWindow", u"Page Index 5", None))
+        ########################################################################
+        #                                                                      #
+        ## END   --------------- PAGE_profiles DEFINITION -----------------   ##
+        #                                                                      #
+        ############################## ---/--/--- ##############################
+
+
+        ########################################################################
+        #                                                                      #
+        ## START   -------------- PAGE_WIDGET DEFINITION ----------------     ##
+        #                                                                      #
+        ##                                                                    ##
+        ########################################################################
         self.page_widgets = QWidget()
         self.page_widgets.setObjectName(u"page_widgets")
         self.verticalLayout_6 = QVBoxLayout(self.page_widgets)
@@ -1210,6 +1542,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.addWidget(self.frame_3)
 
         self.stackedWidget.addWidget(self.page_widgets)
+        ########################################################################
+        #                                                                      #
+        ## END   --------------- PAGE_WIDGET DEFINITION -----------------     ##
+        #                                                                      #
+        ############################## ---/--/--- ##############################
 
         self.verticalLayout_9.addWidget(self.stackedWidget)
 
@@ -1320,9 +1657,6 @@ class Ui_MainWindow(object):
         self.label_top_info_1.setText(QCoreApplication.translate("MainWindow", u"C:\\Program Files\\Blender Foundation\\Blender 2.82", None))
         self.label_top_info_2.setText(QCoreApplication.translate("MainWindow", u"| HOME", None))
         self.label_user_icon.setText(QCoreApplication.translate("MainWindow", u"WM", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"HOME", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Test Content", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Page Index 0", None))
         self.labelBoxBlenderInstalation.setText(QCoreApplication.translate("MainWindow", u"BLENDER INSTALLATION", None))
         self.lineEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Password", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Open Blender", None))

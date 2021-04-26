@@ -68,7 +68,6 @@ class Ui_SplashScreen(object):
 "QProgressBar::chunk{\n"
 "	border-radius: 10px;\n"
 "	background-color: qlineargradient(spread:pad, x1:0, y1:0.511364, x2:1, y2:0.523, stop:0 rgba(122, 255, 243, 255), stop:1 rgba(66, 168, 158, 255));\n"
-#rgba(254, 121, 199, 255), stop:1 rgba(170, 85, 255, 255)
 "}")
         self.progressBar.setValue(24)
         self.label_loading = QLabel(self.dropShadowFrame)
@@ -80,9 +79,6 @@ class Ui_SplashScreen(object):
         self.label_loading.setFont(font2)
         self.label_loading.setStyleSheet(u"color: rgb(98, 114, 164);")
         self.label_loading.setAlignment(Qt.AlignCenter)
-        font3 = QFont()
-        font3.setFamily(u"Segoe UI")
-        font3.setPointSize(10)
 
         self.verticalLayout.addWidget(self.dropShadowFrame)
 

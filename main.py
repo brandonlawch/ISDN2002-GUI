@@ -46,13 +46,17 @@ def readConfig():	#read config from config.txt and save to keymapList[]
         keymapList.clear()
         for x in range(len(temp)):
             keymapList.append(temp[x][1])
+    if (not keymapList):
+        writeDefaultConfig()
 
 def updateConfigFile():	#Save config from keymapList[] to config.txt
-	with open('config.txt', 'w') as file:
-		file.write('LeftHand_VerticalSwing: ' + keymapList[leftHand_verticalSwing] + '\n')
-		file.write('Controller_ButtonX: ' + keymapList[controller_buttonX] + '\n')
-		file.write('LeftLeg_Stepping: ' + keymapList[leftLeg_stepping] + '\n')
-		file.write('RightLeg_Stepping: ' + keymapList[rightLeg_stepping] + '\n')
+	# with open('config.txt', 'w') as file:
+	# 	file.write('LeftHand_VerticalSwing: ' + keymapList[leftHand_verticalSwing] + '\n')
+	# 	file.write('Controller_ButtonX: ' + keymapList[controller_buttonX] + '\n')
+	# 	file.write('LeftLeg_Stepping: ' + keymapList[leftLeg_stepping] + '\n')
+	# 	file.write('RightLeg_Stepping: ' + keymapList[rightLeg_stepping] + '\n')
+    global keymapList
+    print(keymapList)
 
 def restoreDefault():
 	writeDefaultConfig()
@@ -94,6 +98,7 @@ class SplashScreen(QMainWindow):
         self.show()
 
         readConfig()
+        print(keymapList)
 
     def progress(self):
         global counter
@@ -103,7 +108,7 @@ class SplashScreen(QMainWindow):
             self.main = MainWindow()
             self.main.show()
             self.close()
-        counter += 1
+        counter += 99 #1
 ########################################################################
 ## END - Splash Screen Import
 ############################## ---/--/--- ##############################
@@ -111,7 +116,8 @@ class SplashScreen(QMainWindow):
 
 class MainWindow(QMainWindow):
     def __init__(self):
-        QMainWindow.__init__(self)
+        # QMainWindow.__init__(self)
+        super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
@@ -146,6 +152,8 @@ class MainWindow(QMainWindow):
         UIFunctions.addNewMenu(self, "Left Leg", "btn_leftLeg", "url(:/16x16/icons/16x16/cil-x-circle.png)", True)
         UIFunctions.addNewMenu(self, "Right Leg", "btn_rightLeg", "url(:/16x16/icons/16x16/cil-x-circle.png)", True)
         UIFunctions.addNewMenu(self, "Game Profiles", "btn_profiles", "url(:/16x16/icons/16x16/cil-gamepad.png)", True)
+        #temp page for design:
+        UIFunctions.addNewMenu(self, "Design Use", "btn_design", "url(:/16x16/icons/16x16/cil-x.png)", False)
 
         # START MENU => SELECTION
         UIFunctions.selectStandardMenu(self, "btn_home")
@@ -218,15 +226,17 @@ class MainWindow(QMainWindow):
 
         # PAGE HOME
         if btnWidget.objectName() == "btn_home":
+            print(keymapList)
             self.ui.stackedWidget.setCurrentWidget(self.ui.page_home)
             UIFunctions.resetStyle(self, "btn_home")
             UIFunctions.labelDescription(self, 'Primary Settings Controls')
             UIFunctions.labelPage(self, "Home")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
+            self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"", None))
 
         # PAGE LEFT HAND
         if btnWidget.objectName() == "btn_leftHand":
-            self.ui.stackedWidget.setCurrentWidget(self.ui.page_home)
+            self.ui.stackedWidget.setCurrentWidget(self.ui.page_leftHand)
             UIFunctions.resetStyle(self, "btn_leftHand")
             UIFunctions.labelDescription(self, 'Change Keybindings For Left Hand IMU')
             UIFunctions.labelPage(self, "LEFT HAND")
@@ -234,7 +244,7 @@ class MainWindow(QMainWindow):
 
         # PAGE CONTROLLER
         if btnWidget.objectName() == "btn_controller":
-            self.ui.stackedWidget.setCurrentWidget(self.ui.page_home)
+            self.ui.stackedWidget.setCurrentWidget(self.ui.page_controller)
             UIFunctions.resetStyle(self, "btn_controller")
             UIFunctions.labelDescription(self, 'Change Keybindings For Controller Input and IMU')
             UIFunctions.labelPage(self, "CONTROLLER")
@@ -242,7 +252,7 @@ class MainWindow(QMainWindow):
 
         # PAGE LEFT LEG
         if btnWidget.objectName() == "btn_leftLeg":
-            self.ui.stackedWidget.setCurrentWidget(self.ui.page_home)
+            self.ui.stackedWidget.setCurrentWidget(self.ui.page_leftLeg)
             UIFunctions.resetStyle(self, "btn_leftLeg")
             UIFunctions.labelDescription(self, 'Change Keybindings For Left Leg IMU')
             UIFunctions.labelPage(self, "LEFT LEG")
@@ -250,7 +260,7 @@ class MainWindow(QMainWindow):
 
         # PAGE RIGHT LEG
         if btnWidget.objectName() == "btn_rightLeg":
-            self.ui.stackedWidget.setCurrentWidget(self.ui.page_home)
+            self.ui.stackedWidget.setCurrentWidget(self.ui.page_rightLeg)
             UIFunctions.resetStyle(self, "btn_rightLeg")
             UIFunctions.labelDescription(self, 'Change Keybindings For Right Leg IMU')
             UIFunctions.labelPage(self, "RIGHT LEG")
@@ -258,11 +268,29 @@ class MainWindow(QMainWindow):
 
         # PAGE WIDGETS
         if btnWidget.objectName() == "btn_profiles":
-            self.ui.stackedWidget.setCurrentWidget(self.ui.page_home) #page_widgets
+            self.ui.stackedWidget.setCurrentWidget(self.ui.page_profiles)
             UIFunctions.resetStyle(self, "btn_profiles")
             UIFunctions.labelDescription(self, 'Manage Game Profiles')
             UIFunctions.labelPage(self, "Game Profiles")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
+
+        # DESIGN USE
+        if btnWidget.objectName() == "btn_design":
+            self.ui.stackedWidget.setCurrentWidget(self.ui.page_widgets)
+            UIFunctions.resetStyle(self, "btn_design")
+            UIFunctions.labelDescription(self, '########## DESIGN USE ##########')
+            UIFunctions.labelPage(self, "########## DESIGN USE ##########")
+            btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
+
+        if btnWidget.objectName() == "pushButton_confirm":
+            if (not runningCmd):
+                UIFunctions.updateSettingsOnPi(self)
+
+        if btnWidget.objectName() == "pushButton_undo":
+            print("undo changes")
+
+        if btnWidget.objectName() == "pushButton_restore":
+            print("undo changes")
 
     ## ==> END ##
 
