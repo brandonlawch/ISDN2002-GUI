@@ -1,4 +1,4 @@
-LeftHand_VerticalSwing: x
-Controller_ButtonX: y
-LeftLeg_Stepping: w
-RightLeg_Stepping: s
+LeftHand_VerticalSwing: a
+Controller_ButtonX: b
+LeftLeg_Stepping: c
+RightLeg_Stepping: d

@@ -1,2 +1,8 @@
 
 *.pyc
+build
+dist
+INNOSPORT_settingsGUI_v.1.0.1.spec
+gui_base_old.ui
+GUI_BASE.ui
+config.txt
