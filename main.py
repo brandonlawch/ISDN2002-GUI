@@ -107,11 +107,11 @@ class MainWindow(QMainWindow):
 
         self.ui.stackedWidget.setMinimumWidth(20)
         UIFunctions.addNewMenu(self, "HOME", "btn_home", "url(:/16x16/icons/16x16/cil-home.png)", True)
-        UIFunctions.addNewMenu(self, "Left Hand", "btn_leftHand", "url(:/16x16/icons/16x16/cil-x-circle.png)", True)
-        UIFunctions.addNewMenu(self, "Controller", "btn_controller", "url(:/16x16/icons/16x16/cil-x-circle.png)", True)
-        UIFunctions.addNewMenu(self, "Left Leg", "btn_leftLeg", "url(:/16x16/icons/16x16/cil-x-circle.png)", True)
-        UIFunctions.addNewMenu(self, "Right Leg", "btn_rightLeg", "url(:/16x16/icons/16x16/cil-x-circle.png)", True)
-        UIFunctions.addNewMenu(self, "Game Profiles", "btn_profiles", "url(:/16x16/icons/16x16/cil-gamepad.png)", True)
+        UIFunctions.addNewMenu(self, "Left Hand", "btn_leftHand", "url(:/16x16/icons/16x16/cil-circle.png)", True)
+        UIFunctions.addNewMenu(self, "Controller", "btn_controller", "url(:/16x16/icons/16x16/cil-circle.png)", True)
+        UIFunctions.addNewMenu(self, "Left Leg", "btn_leftLeg", "url(:/16x16/icons/16x16/cil-circle.png)", True)
+        UIFunctions.addNewMenu(self, "Right Leg", "btn_rightLeg", "url(:/16x16/icons/16x16/cil-circle.png)", True)
+        UIFunctions.addNewMenu(self, "Game Profiles", "btn_profiles", "url(:/16x16/icons/16x16/cil-gamepad.png)", False)
 
         UIFunctions.selectStandardMenu(self, "btn_home")
         self.ui.stackedWidget.setCurrentWidget(self.ui.page_home)
