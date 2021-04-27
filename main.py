@@ -112,6 +112,7 @@ class MainWindow(QMainWindow):
         UIFunctions.addNewMenu(self, "Left Leg", "btn_leftLeg", "url(:/16x16/icons/16x16/cil-circle.png)", True)
         UIFunctions.addNewMenu(self, "Right Leg", "btn_rightLeg", "url(:/16x16/icons/16x16/cil-circle.png)", True)
         UIFunctions.addNewMenu(self, "Game Profiles", "btn_profiles", "url(:/16x16/icons/16x16/cil-gamepad.png)", False)
+        UIFunctions.addNewMenu(self, "Set-Up", "btn_setUp", "url(:/16x16/icons/16x16/cil-equalizer.png)", False)
 
         UIFunctions.selectStandardMenu(self, "btn_home")
         self.ui.stackedWidget.setCurrentWidget(self.ui.page_home)
@@ -193,6 +194,15 @@ class MainWindow(QMainWindow):
             UIFunctions.resetStyle(self, "btn_profiles")
             UIFunctions.labelDescription(self, 'Manage Game Profiles')
             UIFunctions.labelPage(self, "Game Profiles")
+            btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
+            UIFunctions.updateKeymapUI(self)
+            self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", u"", None))
+
+        if btnWidget.objectName() == "btn_setUp":
+            self.ui.stackedWidget.setCurrentWidget(self.ui.page_setUp)
+            UIFunctions.resetStyle(self, "btn_setUp")
+            UIFunctions.labelDescription(self, 'First Time Set-Up Before Using This Software')
+            UIFunctions.labelPage(self, "Set-Up")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
             UIFunctions.updateKeymapUI(self)
             self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", u"", None))

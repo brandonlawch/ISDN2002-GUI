@@ -1320,10 +1320,10 @@ class Ui_MainWindow(object):
         ##########
         self.label_5001 = QLabel(self.page_profiles)
         self.label_5001.setObjectName(u"label_5001")
-        font002 = QFont()
-        font002.setFamily(u"Segoe UI")
-        font002.setPointSize(15)
-        self.label_5001.setFont(font002)
+        font5002 = QFont()
+        font5002.setFamily(u"Segoe UI")
+        font5002.setPointSize(15)
+        self.label_5001.setFont(font5002)
         self.label_5001.setFixedHeight(100)
         self.label_5001.setAlignment(Qt.AlignCenter)
         self.verticalLayout_5001.addWidget(self.label_5001)
@@ -1338,6 +1338,58 @@ class Ui_MainWindow(object):
         ########################################################################
         #                                                                      #
         ## END   --------------- PAGE_profiles DEFINITION -----------------   ##
+        #                                                                      #
+        ############################## ---/--/--- ##############################
+
+
+        ########################################################################
+        #                                                                      #
+        ## START    -------------- PAGE_setUp DEFINITION ----------------     ##
+        #                                                                      #
+        ## 6001                                                               ##
+        ########################################################################
+        self.page_setUp = QWidget()
+        self.page_setUp.setObjectName(u"page_setUp")
+        self.verticalLayout_6001 = QVBoxLayout(self.page_setUp)
+        self.verticalLayout_6001.setObjectName(u"verticalLayout_6001")
+        ##########
+        font6001 = QFont()
+        # font6001.setFamily(u"Segoe UI") 
+        font6001.setFamily(u"Roboto Thin")
+        font6001.setPointSize(12)
+        self.plainTextEdit_6001 = QPlainTextEdit(self.page_setUp)
+        self.plainTextEdit_6001.setObjectName(u"plainTextEdit_6001")
+        self.plainTextEdit_6001.setFont(font6001)
+        self.plainTextEdit_6001.setReadOnly(True)
+        self.plainTextEdit_6001.setMinimumSize(QSize(200, 200))
+        self.plainTextEdit_6001.setStyleSheet(u"QPlainTextEdit {\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	border-radius: 5px;\n"
+"	padding: 10px;\n"
+"}")
+        self.verticalLayout_6001.addWidget(self.plainTextEdit_6001)
+        ##########
+        self.stackedWidget.addWidget(self.page_setUp)
+
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"This software requires a simple setup before the first use.\n\n\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"Step 1: Check If SSHKey Exist.\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     In a terminal type 'ls ~/.ssh' and see if file 'id_rsa.pub' or 'id_dsa.pub' is present. If so, skip step 2.\n\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"Step 2: Generate SSHKey.\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     Type 'ssh-keygen' and save the key in the default location by hitting 'Enter'.\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     You could also skip adding a passphrase by hitting 'Enter' again.\n\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"Step 3: Create A Directory On Raspberry.\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     Type the command 'ssh pi@raspberrypi.local mkdir -p .ssh'\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     and supply password 'raspberry'.\n\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"Step 4: Copy The SSHKey To Raspberry.\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     Type the command:\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     'cat id_rsa.pub | ssh pi@raspberrypi.local 'cat >> .ssh/authorized_keys'\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     and supply password 'raspberry'.\n\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"Step 5: If You Are Using macOS:\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     Add the SSHKey to your keychain with 'ssh-add -K ~/.ssh/id_rsa'.\n\n\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"And setup is complete!", None))
+        ########################################################################
+        #                                                                      #
+        ## END     --------------- PAGE_setUp DEFINITION -----------------    ##
         #                                                                      #
         ############################## ---/--/--- ##############################
         
@@ -1428,5 +1480,5 @@ class Ui_MainWindow(object):
         self.btn_toggle_menu.setText("")
 
         self.label_credits.setText(QCoreApplication.translate("MainWindow", u"2021 ISDN Year 2 Project - INNOSPORT - Brandon, Harry, Simon, Will", None))
-        self.label_version.setText(QCoreApplication.translate("MainWindow", u"v1.0.1", None))
+        self.label_version.setText(QCoreApplication.translate("MainWindow", u"v1.0.2", None))
     # retranslateUi
