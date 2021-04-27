@@ -15,6 +15,8 @@
 ################################################################################
 
 ## ==> GUI FILE
+import main
+import ui_styles
 from main import *
 
 ## ==> GLOBALS
@@ -129,7 +131,7 @@ class UIFunctions(MainWindow):
         button.setMinimumSize(QSize(0, 70))
         button.setLayoutDirection(Qt.LeftToRight)
         button.setFont(font)
-        button.setStyleSheet(Style.style_bt_standard.replace('ICON_REPLACE', icon))
+        button.setStyleSheet(ui_styles.Style.style_bt_standard.replace('ICON_REPLACE', icon))
         button.setText(name)
         button.setToolTip(name)
         button.clicked.connect(self.Button)
@@ -232,32 +234,107 @@ class UIFunctions(MainWindow):
         ## SHOW ==> CLOSE APPLICATION
         self.ui.btn_close.clicked.connect(lambda: self.close())
 
-
+    def updateKeymapUI(self):
+        if (self.ui.lineEdit_1001.isModified() and self.ui.lineEdit_1001.text()):
+            main.keymapList[main.leftHand_verticalSwing] = self.ui.lineEdit_1001.text()
+        if (self.ui.lineEdit_2001.isModified() and self.ui.lineEdit_2001.text()):
+            main.keymapList[main.controller_buttonX] = self.ui.lineEdit_2001.text()
+        if (self.ui.lineEdit_3001.isModified() and self.ui.lineEdit_3001.text()):
+            main.keymapList[main.leftLeg_stepping] = self.ui.lineEdit_3001.text()
+        if (self.ui.lineEdit_4001.isModified() and self.ui.lineEdit_4001.text()):
+            main.keymapList[main.rightLeg_stepping] = self.ui.lineEdit_4001.text()
     ########################################################################
     ## END - GUI DEFINITIONS
     ########################################################################
 
-    def updateSettingsOnPi(self):
-        global runningCmd, updateStatus
-        if (runningCmd):
-            return
-        runningCmd = True
+class configFunctions(MainWindow):
+    def writeDefaultConfig(self):	#Write default mappings to config.txt
+        with open('config.txt', 'w') as file:
+            file.write('LeftHand_VerticalSwing: ' + 'x' + '\n')
+            file.write('Controller_ButtonX: ' + 'y' + '\n')
+            file.write('LeftLeg_Stepping: ' + 'w' + '\n')
+            file.write('RightLeg_Stepping: ' + 's' + '\n')
 
-        updateConfigFile()
-        updateStatus = 'incomplete'
-        self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Settings", None))
+    def readConfig(self):  #read config from config.txt and save to keymapList[]
+        main.corrupted = False
+        if (os.path.isfile('config.txt') == False):	#if config.txt does not exist, create one with default config
+            configFunctions.writeDefaultConfig(self)
+        with open('config.txt', 'r') as file:
+            temp = file.read().splitlines()
+            for x in range(len(temp)):
+                temp[x] = temp[x].split(': ')
+            main.keymapList.clear()
+            for x in range(len(temp)):
+                if (temp[x][0] != main.verifyList[x] or temp[x][1] == ""):
+                    main.corrupted = True
+                main.keymapList.append(temp[x][1])
+        if len(main.keymapList) != len(main.verifyList):
+            main.corrupted = True
+        if ((not main.keymapList) or main.corrupted):
+            configFunctions.writeDefaultConfig(self)
+
+    def updateConfigFile(self):	#Save config from keymapList[] to config.txt
+        with open('config.txt', 'w') as file:
+        	file.write('LeftHand_VerticalSwing: ' + main.keymapList[main.leftHand_verticalSwing] + '\n')
+        	file.write('Controller_ButtonX: ' + main.keymapList[main.controller_buttonX] + '\n')
+        	file.write('LeftLeg_Stepping: ' + main.keymapList[main.leftLeg_stepping] + '\n')
+        	file.write('RightLeg_Stepping: ' + main.keymapList[main.rightLeg_stepping] + '\n')
+
+    def restoreDefault(self):
+        configFunctions.writeDefaultConfig(self)
+        configFunctions.readConfig(self)
+
+    def updateSettingsOnPi(self):
+        if (not main.runningCmd):
+            main.runningCmd = True
+            configFunctions.updateConfigFile(self)
+            self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Settings", None))
+            
+            main.runningCmd = True
+            process = subprocess.Popen(['scp', 'config.txt', 'pi@raspberrypi.local:/home/pi/INNOSPORT/new_config.txt'],creationflags=0x08000000)
+            try:
+                process.wait(5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+            if (process.returncode != 0):
+                self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Error", None))
+                self.ui.label_001.setStyleSheet("QLabel { color : rgb(255, 15, 140) }")
+            else:
+                self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Complete", None))
+                self.ui.label_001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")
+            main.runningCmd = False
+
+
+class profileFunctions(MainWindow):
+        def loadProfile(self):
+            filename = QFileDialog.getOpenFileName(self,caption = "Select Profile", filter = "Profiles (*.txt)")
+            path = filename[0]
+            if (path):
+                with open(path, 'r') as profiletxt:
+                    temp = profiletxt.read().splitlines()
+                    with open('config.txt', 'w') as file:
+                        for x in range(len(temp)):
+                            file.write(temp[x] + '\n')
+                configFunctions.readConfig(self)
+                self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", u"Profile Loaded", None))
+                self.ui.label_5001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")
         
-        process = subprocess.Popen(['scp', 'config.txt', 'pi@raspberrypi.local:/home/pi/INNOSPORT/new_config.txt'],creationflags=0x08000000)
-        try:
-            process.wait(5)
-        except subprocess.TimeoutExpired:
-            process.kill()
-        if (process.returncode != 0):
-            updateStatus = 'error'
-            self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Error", None))
-            self.ui.label_001.setStyleSheet("QLabel { color : rgb(255, 15, 140) }")
-        else:
-            updateStatus = 'complete'
-            self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Complete", None))
-            self.ui.label_001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")
-        runningCmd = False
+        def saveProfile(self):
+            filename = QFileDialog.getSaveFileName(self, caption="Save Profile", filter="Profiles (*.txt)")
+            path = filename[0]
+            if (path):
+                with open(path, 'w') as file:
+                    file.write('LeftHand_VerticalSwing: ' + main.keymapList[main.leftHand_verticalSwing] + '\n')
+                    file.write('Controller_ButtonX: ' + main.keymapList[main.controller_buttonX] + '\n')
+                    file.write('LeftLeg_Stepping: ' + main.keymapList[main.leftLeg_stepping] + '\n')
+                    file.write('RightLeg_Stepping: ' + main.keymapList[main.rightLeg_stepping] + '\n')
+                self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", u"Profile Saved", None))
+                self.ui.label_5001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")
+
+        def deleteProfile(self):
+            filename = QFileDialog.getOpenFileName(self,caption = "Select Profile", filter = "Profiles (*.txt)")
+            path = filename[0]
+            if (path):
+                os.remove(path)
+                self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", u"Profile Deleted", None))
+                self.ui.label_5001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")

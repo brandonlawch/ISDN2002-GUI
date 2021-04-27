@@ -14,7 +14,7 @@
 ## https://doc.qt.io/qtforpython/licenses.html
 ##
 ################################################################################
-
+from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import (QCoreApplication, QMetaObject, QObject, QPoint,
     QRect, QSize, QUrl, Qt)
 from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
@@ -23,9 +23,15 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
 from PySide2.QtWidgets import *
 
 import files_rc
+from app_modules import *\
+
+class Validator(QtGui.QValidator):
+    def validate(self, string, pos):
+        return QtGui.QValidator.Acceptable, string.lower(), pos
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        self.validator = Validator(MainWindow)
         if MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(1000, 720)
@@ -709,10 +715,20 @@ class Ui_MainWindow(object):
         self.page_home.setObjectName(u"page_home")
         self.verticalLayout_10 = QVBoxLayout(self.page_home)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-
+        ##########
+        self.label_002 = QLabel(self.page_home)
+        self.label_002.setObjectName(u"label_002")
+        font003 = QFont()
+        font003.setFamily(u"Roboto Thin")
+        font003.setPointSize(30)
+        self.label_002.setFont(font003)
+        self.label_002.setStyleSheet(u"")
+        self.verticalLayout_10.addWidget(self.label_002, alignment=Qt.AlignCenter)
+        ##########
         self.pushButton_confirm = QPushButton(self.page_home)
         self.pushButton_confirm.setObjectName(u"pushButton_confirm")
         self.pushButton_confirm.setMinimumSize(QSize(150, 80))
+        self.pushButton_confirm.setFixedWidth(600)
         font001 = QFont()
         font001.setFamily(u"Segoe UI")
         font001.setPointSize(15)
@@ -733,12 +749,13 @@ class Ui_MainWindow(object):
         icon001 = QIcon()
         icon001.addFile(u":/16x16/icons/16x16/cil-cloud-upload.png", QSize(), QIcon.Normal, QIcon.Off)
         self.pushButton_confirm.setIcon(icon001)
-        self.pushButton_confirm.clicked.connect(MainWindow.Button)
-        self.verticalLayout_10.addWidget(self.pushButton_confirm)
-
+        self.pushButton_confirm.clicked.connect(MainWindow.homePageButtons)
+        self.verticalLayout_10.addWidget(self.pushButton_confirm, alignment=Qt.AlignCenter)
+        ##########
         self.pushButton_undo = QPushButton(self.page_home)
         self.pushButton_undo.setObjectName(u"pushButton_undo")
         self.pushButton_undo.setMinimumSize(QSize(150, 80))
+        self.pushButton_undo.setFixedWidth(600)
         self.pushButton_undo.setFont(font001)
         self.pushButton_undo.setStyleSheet(u"QPushButton {\n"
 "	border: 2px solid rgb(52, 59, 72);\n"
@@ -756,12 +773,13 @@ class Ui_MainWindow(object):
         icon002 = QIcon()
         icon002.addFile(u":/16x16/icons/16x16/cil-reload.png", QSize(), QIcon.Normal, QIcon.Off)
         self.pushButton_undo.setIcon(icon002)
-        self.pushButton_undo.clicked.connect(MainWindow.Button)
-        self.verticalLayout_10.addWidget(self.pushButton_undo)
-
+        self.pushButton_undo.clicked.connect(MainWindow.homePageButtons)
+        self.verticalLayout_10.addWidget(self.pushButton_undo, alignment=Qt.AlignCenter)
+        ##########
         self.pushButton_restore = QPushButton(self.page_home)
         self.pushButton_restore.setObjectName(u"pushButton_restore")
         self.pushButton_restore.setMinimumSize(QSize(150, 80))
+        self.pushButton_restore.setFixedWidth(600)
         self.pushButton_restore.setFont(font001)
         self.pushButton_restore.setStyleSheet(u"QPushButton {\n"
 "	border: 2px solid rgb(52, 59, 72);\n"
@@ -779,24 +797,25 @@ class Ui_MainWindow(object):
         icon003 = QIcon()
         icon003.addFile(u":/16x16/icons/16x16/cil-history.png", QSize(), QIcon.Normal, QIcon.Off)
         self.pushButton_restore.setIcon(icon003)
-        self.pushButton_restore.clicked.connect(MainWindow.Button)
-        self.verticalLayout_10.addWidget(self.pushButton_restore)
-
+        self.pushButton_restore.clicked.connect(MainWindow.homePageButtons)
+        self.verticalLayout_10.addWidget(self.pushButton_restore, alignment=Qt.AlignCenter)
+        ##########
         self.label_001 = QLabel(self.page_home)
         self.label_001.setObjectName(u"label_001")
         font002 = QFont()
         font002.setFamily(u"Segoe UI")
         font002.setPointSize(15)
         self.label_001.setFont(font002)
-        self.label_001.setFixedHeight(40)
+        self.label_001.setFixedHeight(100)
         self.label_001.setAlignment(Qt.AlignCenter)
         self.verticalLayout_10.addWidget(self.label_001)
-
+        ##########
         self.stackedWidget.addWidget(self.page_home)
 
-        self.pushButton_confirm.setText(QCoreApplication.translate("MainWindow", u" Confirm Settings", None))
-        self.pushButton_undo.setText(QCoreApplication.translate("MainWindow", u" Undo Changes", None))
-        self.pushButton_restore.setText(QCoreApplication.translate("MainWindow", u" Restore Defaults", None))
+        self.label_002.setText(QCoreApplication.translate("MainWindow", u"Home", None))
+        self.pushButton_confirm.setText(QCoreApplication.translate("MainWindow", u"   Confirm Settings", None))
+        self.pushButton_undo.setText(QCoreApplication.translate("MainWindow", u"   Undo Changes", None))
+        self.pushButton_restore.setText(QCoreApplication.translate("MainWindow", u"   Restore Defaults", None))
         self.label_001.setText(QCoreApplication.translate("MainWindow", u"", None))
         ########################################################################
         #                                                                      #
@@ -813,42 +832,93 @@ class Ui_MainWindow(object):
         ########################################################################
         self.page_leftHand = QWidget()
         self.page_leftHand.setObjectName(u"page_leftHand")
-        self.verticalLayout_1001 = QVBoxLayout(self.page_leftHand)
-        self.verticalLayout_1001.setObjectName(u"verticalLayout_1001")
-
-        self.label_1001 = QLabel(self.page_leftHand)
-        self.label_1001.setObjectName(u"label_1001")
-        font1001 = QFont()
-        font1001.setFamily(u"Segoe UI")
-        font1001.setPointSize(40)
-        self.label_1001.setFont(font1001)
-        self.label_1001.setStyleSheet(u"")
-        self.label_1001.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_1001.addWidget(self.label_1001)
-
-        self.label_1002 = QLabel(self.page_leftHand)
-        self.label_1002.setObjectName(u"label_1002")
-        font1002 = QFont()
-        font1002.setFamily(u"Segoe UI")
-        font1002.setPointSize(14)
-        self.label_1002.setFont(font1002)
-        self.label_1002.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_1001.addWidget(self.label_1002)
-
+        self.gridLayout_1001 = QGridLayout(self.page_leftHand)
+        self.gridLayout_1001.setObjectName(u"gridLayout_1001")
+        self.gridLayout_1001.setRowStretch(0, 2)
+        self.gridLayout_1001.setRowStretch(1, 1)
+        self.gridLayout_1001.setRowStretch(2, 1)
+        self.gridLayout_1001.setRowStretch(3, 6)
+        self.gridLayout_1001.setColumnStretch(0, 5)
+        self.gridLayout_1001.setColumnStretch(1, 2)
+        self.gridLayout_1001.setColumnStretch(2, 4)
+        ##########
         self.label_1003 = QLabel(self.page_leftHand)
         self.label_1003.setObjectName(u"label_1003")
+        font1001 = QFont()
+        font1001.setFamily(u"Roboto Thin")
+        font1001.setPointSize(30)
+        self.label_1003.setFont(font1001)
+        self.label_1003.setStyleSheet(u"")
+        self.gridLayout_1001.addWidget(self.label_1003, 0, 0, 1, 3)
+        ##########
+        font1002 = QFont()
+        font1002.setFamily(u"Roboto Thin")
+        font1002.setPointSize(15)
+        self.label_1001 = QLabel(self.page_leftHand)
+        self.label_1001.setObjectName(u"label_1001")
+        self.label_1001.setFont(font1002)
+        self.label_1001.setAlignment(Qt.AlignCenter | Qt.AlignRight)
+        self.gridLayout_1001.addWidget(self.label_1001, 1, 0, 1, 1)
+        ##########
         font1003 = QFont()
-        font1003.setFamily(u"Segoe UI")
-        font1003.setPointSize(15)
-        self.label_1003.setFont(font1003)
-        self.label_1003.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_1001.addWidget(self.label_1003)
-
+        font1003.setFamily(u"Roboto Thin")
+        font1003.setPointSize(13)
+        self.lineEdit_1001 = QLineEdit(self.page_leftHand)
+        self.lineEdit_1001.setObjectName(u"lineEdit_1001")
+        self.lineEdit_1001.setFont(font1003)
+        self.lineEdit_1001.setMaxLength(1)
+        self.lineEdit_1001.setValidator(self.validator)
+        self.lineEdit_1001.setMinimumSize(QSize(0, 30))
+        self.lineEdit_1001.setMaximumWidth(220)
+        self.lineEdit_1001.setStyleSheet(u"QLineEdit {\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(27, 29, 35);\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.gridLayout_1001.addWidget(self.lineEdit_1001, 1, 1, 1, 2)
+        ##########
+        self.label_1002 = QLabel(self.page_leftHand)
+        self.label_1002.setObjectName(u"label_1002")
+        self.label_1002.setFont(font1002)
+        self.label_1002.setAlignment(Qt.AlignCenter | Qt.AlignRight)
+        self.gridLayout_1001.addWidget(self.label_1002, 2, 0, 1, 1)
+        ##########
+        self.lineEdit_1002 = QLineEdit(self.page_leftHand)
+        self.lineEdit_1002.setObjectName(u"lineEdit_1002")
+        self.lineEdit_1002.setFont(font1003)
+        self.lineEdit_1002.setReadOnly(True)
+        self.lineEdit_1002.setMaxLength(1)
+        self.lineEdit_1002.setValidator(self.validator)
+        self.lineEdit_1002.setMinimumSize(QSize(0, 30))
+        self.lineEdit_1002.setMaximumWidth(220)
+        self.lineEdit_1002.setStyleSheet(u"QLineEdit {\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(27, 29, 35);\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.gridLayout_1001.addWidget(self.lineEdit_1002, 2, 1, 1, 2)
+        ##########
         self.stackedWidget.addWidget(self.page_leftHand)
 
-        self.label_1001.setText(QCoreApplication.translate("MainWindow", u"Left Hand", None))
-        self.label_1002.setText(QCoreApplication.translate("MainWindow", u"lefthand2", None))
-        self.label_1003.setText(QCoreApplication.translate("MainWindow", u"Page Index 1", None))
+        self.label_1003.setText(QCoreApplication.translate("MainWindow", u"Left Hand Keymappings", None))
+        self.label_1001.setText(QCoreApplication.translate("MainWindow", u"Vertical Swing: ", None))
+        self.lineEdit_1001.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
+        self.label_1002.setText(QCoreApplication.translate("MainWindow", u"Horizontal Swing: ", None))
+        self.lineEdit_1002.setPlaceholderText(QCoreApplication.translate("MainWindow", u"--- Disabled ---", None))
         ########################################################################
         #                                                                      #
         ## END  --------------- PAGE_LEFTHAND DEFINITION -----------------    ##
@@ -864,42 +934,90 @@ class Ui_MainWindow(object):
         ########################################################################
         self.page_controller = QWidget()
         self.page_controller.setObjectName(u"page_controller")
-        self.verticalLayout_2001 = QVBoxLayout(self.page_controller)
-        self.verticalLayout_2001.setObjectName(u"verticalLayout_2001")
-
-        self.label_2001 = QLabel(self.page_controller)
-        self.label_2001.setObjectName(u"label_2001")
-        font2001 = QFont()
-        font2001.setFamily(u"Segoe UI")
-        font2001.setPointSize(40)
-        self.label_2001.setFont(font2001)
-        self.label_2001.setStyleSheet(u"")
-        self.label_2001.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_2001.addWidget(self.label_2001)
-
-        self.label_2002 = QLabel(self.page_controller)
-        self.label_2002.setObjectName(u"label_2002")
-        font2002 = QFont()
-        font2002.setFamily(u"Segoe UI")
-        font2002.setPointSize(14)
-        self.label_2002.setFont(font2002)
-        self.label_2002.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_2001.addWidget(self.label_2002)
-
+        self.gridLayout_2001 = QGridLayout(self.page_controller)
+        self.gridLayout_2001.setObjectName(u"gridLayout_2001")
+        self.gridLayout_2001.setRowStretch(0, 2)
+        self.gridLayout_2001.setRowStretch(1, 1)
+        self.gridLayout_2001.setRowStretch(2, 1)
+        self.gridLayout_2001.setRowStretch(3, 6)
+        self.gridLayout_2001.setColumnStretch(0, 5)
+        self.gridLayout_2001.setColumnStretch(1, 2)
+        self.gridLayout_2001.setColumnStretch(2, 4)
+        ##########
         self.label_2003 = QLabel(self.page_controller)
         self.label_2003.setObjectName(u"label_2003")
-        font2003 = QFont()
-        font2003.setFamily(u"Segoe UI")
-        font2003.setPointSize(15)
-        self.label_2003.setFont(font2003)
-        self.label_2003.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_2001.addWidget(self.label_2003)
-
+        font2001 = QFont()
+        font2001.setFamily(u"Roboto Thin")
+        font2001.setPointSize(30)
+        self.label_2003.setFont(font2001)
+        self.label_2003.setStyleSheet(u"")
+        self.gridLayout_2001.addWidget(self.label_2003, 0, 0, 1, 3)
+        ##########
+        font2002 = QFont()
+        font2002.setFamily(u"Roboto Thin")
+        font2002.setPointSize(15)
+        self.label_2001 = QLabel(self.page_controller)
+        self.label_2001.setObjectName(u"label_2001")
+        self.label_2001.setFont(font2002)
+        self.label_2001.setAlignment(Qt.AlignCenter | Qt.AlignRight)
+        self.gridLayout_2001.addWidget(self.label_2001, 1, 0, 1, 1)
+        ##########
+        self.lineEdit_2001 = QLineEdit(self.page_controller)
+        self.lineEdit_2001.setObjectName(u"lineEdit_2001")
+        self.lineEdit_2001.setFont(font1003)
+        self.lineEdit_2001.setMaxLength(1)
+        self.lineEdit_2001.setValidator(self.validator)
+        self.lineEdit_2001.setMinimumSize(QSize(0, 30))
+        self.lineEdit_2001.setMaximumWidth(220)
+        self.lineEdit_2001.setStyleSheet(u"QLineEdit {\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(27, 29, 35);\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.gridLayout_2001.addWidget(self.lineEdit_2001, 1, 1, 1, 2)
+        ##########
+        self.label_2002 = QLabel(self.page_controller)
+        self.label_2002.setObjectName(u"label_2002")
+        self.label_2002.setFont(font2002)
+        self.label_2002.setAlignment(Qt.AlignCenter | Qt.AlignRight)
+        self.gridLayout_2001.addWidget(self.label_2002, 2, 0, 1, 1)
+        ##########
+        self.lineEdit_2002 = QLineEdit(self.page_controller)
+        self.lineEdit_2002.setObjectName(u"lineEdit_2002")
+        self.lineEdit_2002.setFont(font1003)
+        self.lineEdit_2002.setReadOnly(True)
+        self.lineEdit_2002.setMaxLength(1)
+        self.lineEdit_2002.setValidator(self.validator)
+        self.lineEdit_2002.setMinimumSize(QSize(0, 30))
+        self.lineEdit_2002.setMaximumWidth(220)
+        self.lineEdit_2002.setStyleSheet(u"QLineEdit {\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(27, 29, 35);\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.gridLayout_2001.addWidget(self.lineEdit_2002, 2, 1, 1, 2)
+        ##########
         self.stackedWidget.addWidget(self.page_controller)
 
-        self.label_2001.setText(QCoreApplication.translate("MainWindow", u"Controller", None))
-        self.label_2002.setText(QCoreApplication.translate("MainWindow", u"controller", None))
-        self.label_2003.setText(QCoreApplication.translate("MainWindow", u"Page Index 2", None))
+        self.label_2003.setText(QCoreApplication.translate("MainWindow", u"Controller Keymappings", None))
+        self.label_2001.setText(QCoreApplication.translate("MainWindow", u"Button X: ", None))
+        self.lineEdit_2001.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
+        self.label_2002.setText(QCoreApplication.translate("MainWindow", u"Button Y: ", None))
+        self.lineEdit_2002.setPlaceholderText(QCoreApplication.translate("MainWindow", u"--- Disabled ---", None))
         ########################################################################
         #                                                                      #
         ## END --------------- PAGE_CONTROLLER DEFINITION -----------------   ##
@@ -915,42 +1033,90 @@ class Ui_MainWindow(object):
         ########################################################################
         self.page_leftLeg = QWidget()
         self.page_leftLeg.setObjectName(u"page_leftLeg")
-        self.verticalLayout_3001 = QVBoxLayout(self.page_leftLeg)
-        self.verticalLayout_3001.setObjectName(u"verticalLayout_3001")
-
-        self.label_3001 = QLabel(self.page_leftLeg)
-        self.label_3001.setObjectName(u"label_3001")
-        font3001 = QFont()
-        font3001.setFamily(u"Segoe UI")
-        font3001.setPointSize(40)
-        self.label_3001.setFont(font3001)
-        self.label_3001.setStyleSheet(u"")
-        self.label_3001.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_3001.addWidget(self.label_3001)
-
-        self.label_3002 = QLabel(self.page_leftLeg)
-        self.label_3002.setObjectName(u"label_3002")
-        font3002 = QFont()
-        font3002.setFamily(u"Segoe UI")
-        font3002.setPointSize(14)
-        self.label_3002.setFont(font3002)
-        self.label_3002.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_3001.addWidget(self.label_3002)
-
+        self.gridLayout_3001 = QGridLayout(self.page_leftLeg)
+        self.gridLayout_3001.setObjectName(u"gridLayout_3001")
+        self.gridLayout_3001.setRowStretch(0, 2)
+        self.gridLayout_3001.setRowStretch(1, 1)
+        self.gridLayout_3001.setRowStretch(2, 1)
+        self.gridLayout_3001.setRowStretch(3, 6)
+        self.gridLayout_3001.setColumnStretch(0, 5)
+        self.gridLayout_3001.setColumnStretch(1, 2)
+        self.gridLayout_3001.setColumnStretch(2, 4)
+        ##########
         self.label_3003 = QLabel(self.page_leftLeg)
         self.label_3003.setObjectName(u"label_3003")
-        font3003 = QFont()
-        font3003.setFamily(u"Segoe UI")
-        font3003.setPointSize(15)
-        self.label_3003.setFont(font3003)
-        self.label_3003.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_3001.addWidget(self.label_3003)
-
+        font3001 = QFont()
+        font3001.setFamily(u"Roboto Thin")
+        font3001.setPointSize(30)
+        self.label_3003.setFont(font3001)
+        self.label_3003.setStyleSheet(u"")
+        self.gridLayout_3001.addWidget(self.label_3003, 0, 0, 1, 3)
+        ##########
+        font3002 = QFont()
+        font3002.setFamily(u"Roboto Thin")
+        font3002.setPointSize(15)
+        self.label_3001 = QLabel(self.page_leftLeg)
+        self.label_3001.setObjectName(u"label_3001")
+        self.label_3001.setFont(font3002)
+        self.label_3001.setAlignment(Qt.AlignCenter | Qt.AlignRight)
+        self.gridLayout_3001.addWidget(self.label_3001, 1, 0, 1, 1)
+        ##########
+        self.lineEdit_3001 = QLineEdit(self.page_leftLeg)
+        self.lineEdit_3001.setObjectName(u"lineEdit_3001")
+        self.lineEdit_3001.setFont(font1003)
+        self.lineEdit_3001.setMaxLength(1)
+        self.lineEdit_3001.setValidator(self.validator)
+        self.lineEdit_3001.setMinimumSize(QSize(0, 30))
+        self.lineEdit_3001.setMaximumWidth(220)
+        self.lineEdit_3001.setStyleSheet(u"QLineEdit {\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(27, 29, 35);\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.gridLayout_3001.addWidget(self.lineEdit_3001, 1, 1, 1, 2)
+        ##########
+        self.label_3002 = QLabel(self.page_leftLeg)
+        self.label_3002.setObjectName(u"label_3002")
+        self.label_3002.setFont(font3002)
+        self.label_3002.setAlignment(Qt.AlignCenter | Qt.AlignRight)
+        self.gridLayout_3001.addWidget(self.label_3002, 2, 0, 1, 1)
+        ##########
+        self.lineEdit_3002 = QLineEdit(self.page_leftLeg)
+        self.lineEdit_3002.setObjectName(u"lineEdit_3002")
+        self.lineEdit_3002.setFont(font1003)
+        self.lineEdit_3002.setReadOnly(True)
+        self.lineEdit_3002.setMaxLength(1)
+        self.lineEdit_3002.setValidator(self.validator)
+        self.lineEdit_3002.setMinimumSize(QSize(0, 30))
+        self.lineEdit_3002.setMaximumWidth(220)
+        self.lineEdit_3002.setStyleSheet(u"QLineEdit {\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(27, 29, 35);\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.gridLayout_3001.addWidget(self.lineEdit_3002, 2, 1, 1, 2)
+        ##########
         self.stackedWidget.addWidget(self.page_leftLeg)
 
-        self.label_3001.setText(QCoreApplication.translate("MainWindow", u"Left Leg", None))
-        self.label_3002.setText(QCoreApplication.translate("MainWindow", u"Left Leg", None))
-        self.label_3003.setText(QCoreApplication.translate("MainWindow", u"Page Index 3", None))
+        self.label_3003.setText(QCoreApplication.translate("MainWindow", u"Left Leg Keymappings", None))
+        self.label_3001.setText(QCoreApplication.translate("MainWindow", u"Stepping: ", None))
+        self.lineEdit_3001.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
+        self.label_3002.setText(QCoreApplication.translate("MainWindow", u"Running: ", None))
+        self.lineEdit_3002.setPlaceholderText(QCoreApplication.translate("MainWindow", u"--- Disabled ---", None))
         ########################################################################
         #                                                                      #
         ## END   --------------- PAGE_LEFTLEG DEFINITION -----------------    ##
@@ -966,42 +1132,90 @@ class Ui_MainWindow(object):
         ########################################################################
         self.page_rightLeg = QWidget()
         self.page_rightLeg.setObjectName(u"page_rightLeg")
-        self.verticalLayout_4001 = QVBoxLayout(self.page_rightLeg)
-        self.verticalLayout_4001.setObjectName(u"verticalLayout_4001")
-
-        self.label_4001 = QLabel(self.page_rightLeg)
-        self.label_4001.setObjectName(u"label_4001")
-        font4001 = QFont()
-        font4001.setFamily(u"Segoe UI")
-        font4001.setPointSize(40)
-        self.label_4001.setFont(font4001)
-        self.label_4001.setStyleSheet(u"")
-        self.label_4001.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_4001.addWidget(self.label_4001)
-
-        self.label_4002 = QLabel(self.page_rightLeg)
-        self.label_4002.setObjectName(u"label_4002")
-        font4002 = QFont()
-        font4002.setFamily(u"Segoe UI")
-        font4002.setPointSize(14)
-        self.label_4002.setFont(font4002)
-        self.label_4002.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_4001.addWidget(self.label_4002)
-
+        self.gridLayout_4001 = QGridLayout(self.page_rightLeg)
+        self.gridLayout_4001.setObjectName(u"gridLayout_4001")
+        self.gridLayout_4001.setRowStretch(0, 2)
+        self.gridLayout_4001.setRowStretch(1, 1)
+        self.gridLayout_4001.setRowStretch(2, 1)
+        self.gridLayout_4001.setRowStretch(3, 6)
+        self.gridLayout_4001.setColumnStretch(0, 5)
+        self.gridLayout_4001.setColumnStretch(1, 2)
+        self.gridLayout_4001.setColumnStretch(2, 4)
+        ##########
         self.label_4003 = QLabel(self.page_rightLeg)
         self.label_4003.setObjectName(u"label_4003")
-        font4003 = QFont()
-        font4003.setFamily(u"Segoe UI")
-        font4003.setPointSize(15)
-        self.label_4003.setFont(font4003)
-        self.label_4003.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_4001.addWidget(self.label_4003)
-
+        font4001 = QFont()
+        font4001.setFamily(u"Roboto Thin")
+        font4001.setPointSize(30)
+        self.label_4003.setFont(font4001)
+        self.label_4003.setStyleSheet(u"")
+        self.gridLayout_4001.addWidget(self.label_4003, 0, 0, 1, 3)
+        ##########
+        font4002 = QFont()
+        font4002.setFamily(u"Roboto Thin")
+        font4002.setPointSize(15)
+        self.label_4001 = QLabel(self.page_rightLeg)
+        self.label_4001.setObjectName(u"label_4001")
+        self.label_4001.setFont(font4002)
+        self.label_4001.setAlignment(Qt.AlignCenter | Qt.AlignRight)
+        self.gridLayout_4001.addWidget(self.label_4001, 1, 0, 1, 1)
+        ##########
+        self.lineEdit_4001 = QLineEdit(self.page_rightLeg)
+        self.lineEdit_4001.setObjectName(u"lineEdit_4001")
+        self.lineEdit_4001.setFont(font1003)
+        self.lineEdit_4001.setMaxLength(1)
+        self.lineEdit_4001.setValidator(self.validator)
+        self.lineEdit_4001.setMinimumSize(QSize(0, 30))
+        self.lineEdit_4001.setMaximumWidth(220)
+        self.lineEdit_4001.setStyleSheet(u"QLineEdit {\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(27, 29, 35);\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.gridLayout_4001.addWidget(self.lineEdit_4001, 1, 1, 1, 2)
+        ##########
+        self.label_4002 = QLabel(self.page_rightLeg)
+        self.label_4002.setObjectName(u"label_4002")
+        self.label_4002.setFont(font4002)
+        self.label_4002.setAlignment(Qt.AlignCenter | Qt.AlignRight)
+        self.gridLayout_4001.addWidget(self.label_4002, 2, 0, 1, 1)
+        ##########
+        self.lineEdit_4002 = QLineEdit(self.page_rightLeg)
+        self.lineEdit_4002.setObjectName(u"lineEdit_4002")
+        self.lineEdit_4002.setFont(font1003)
+        self.lineEdit_4002.setReadOnly(True)
+        self.lineEdit_4002.setMaxLength(1)
+        self.lineEdit_4002.setValidator(self.validator)
+        self.lineEdit_4002.setMinimumSize(QSize(0, 30))
+        self.lineEdit_4002.setMaximumWidth(220)
+        self.lineEdit_4002.setStyleSheet(u"QLineEdit {\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(27, 29, 35);\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.gridLayout_4001.addWidget(self.lineEdit_4002, 2, 1, 1, 2)
+        ##########
         self.stackedWidget.addWidget(self.page_rightLeg)
 
-        self.label_4001.setText(QCoreApplication.translate("MainWindow", u"Right Leg", None))
-        self.label_4002.setText(QCoreApplication.translate("MainWindow", u"Right Leg", None))
-        self.label_4003.setText(QCoreApplication.translate("MainWindow", u"Page Index 4", None))
+        self.label_4003.setText(QCoreApplication.translate("MainWindow", u"Right Leg Keymappings", None))
+        self.label_4001.setText(QCoreApplication.translate("MainWindow", u"Stepping: ", None))
+        self.lineEdit_4001.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
+        self.label_4002.setText(QCoreApplication.translate("MainWindow", u"Running: ", None))
+        self.lineEdit_4002.setPlaceholderText(QCoreApplication.translate("MainWindow", u"--- Disabled ---", None))
         ########################################################################
         #                                                                      #
         ## END   --------------- PAGE_RIGHTLEG DEFINITION -----------------   ##
@@ -1019,132 +1233,25 @@ class Ui_MainWindow(object):
         self.page_profiles.setObjectName(u"page_profiles")
         self.verticalLayout_5001 = QVBoxLayout(self.page_profiles)
         self.verticalLayout_5001.setObjectName(u"verticalLayout_5001")
-
-        self.label_5001 = QLabel(self.page_profiles)
-        self.label_5001.setObjectName(u"label_5001")
+        ##########
+        self.label_5002 = QLabel(self.page_profiles)
+        self.label_5002.setObjectName(u"label_002")
+        font5003 = QFont()
+        font5003.setFamily(u"Roboto Thin")
+        font5003.setPointSize(30)
+        self.label_5002.setFont(font5003)
+        self.label_5002.setStyleSheet(u"")
+        self.verticalLayout_5001.addWidget(self.label_5002, alignment=Qt.AlignCenter)
+        ##########
+        self.pushButton_load = QPushButton(self.page_profiles)
+        self.pushButton_load.setObjectName(u"pushButton_load")
+        self.pushButton_load.setMinimumSize(QSize(150, 80))
+        self.pushButton_load.setFixedWidth(600)
         font5001 = QFont()
         font5001.setFamily(u"Segoe UI")
-        font5001.setPointSize(40)
-        self.label_5001.setFont(font5001)
-        self.label_5001.setStyleSheet(u"")
-        self.label_5001.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_5001.addWidget(self.label_5001)
-
-        self.label_5002 = QLabel(self.page_profiles)
-        self.label_5002.setObjectName(u"label_5002")
-        font5002 = QFont()
-        font5002.setFamily(u"Segoe UI")
-        font5002.setPointSize(14)
-        self.label_5002.setFont(font5002)
-        self.label_5002.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_5001.addWidget(self.label_5002)
-
-        self.label_5003 = QLabel(self.page_profiles)
-        self.label_5003.setObjectName(u"label_5003")
-        font5003 = QFont()
-        font5003.setFamily(u"Segoe UI")
-        font5003.setPointSize(15)
-        self.label_5003.setFont(font5003)
-        self.label_5003.setAlignment(Qt.AlignCenter)
-        self.verticalLayout_5001.addWidget(self.label_5003)
-
-        self.stackedWidget.addWidget(self.page_profiles)
-
-        self.label_5001.setText(QCoreApplication.translate("MainWindow", u"Game Profiles", None))
-        self.label_5002.setText(QCoreApplication.translate("MainWindow", u"game profiles", None))
-        self.label_5003.setText(QCoreApplication.translate("MainWindow", u"Page Index 5", None))
-        ########################################################################
-        #                                                                      #
-        ## END   --------------- PAGE_profiles DEFINITION -----------------   ##
-        #                                                                      #
-        ############################## ---/--/--- ##############################
-
-
-        ########################################################################
-        #                                                                      #
-        ## START   -------------- PAGE_WIDGET DEFINITION ----------------     ##
-        #                                                                      #
-        ##                                                                    ##
-        ########################################################################
-        self.page_widgets = QWidget()
-        self.page_widgets.setObjectName(u"page_widgets")
-        self.verticalLayout_6 = QVBoxLayout(self.page_widgets)
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.frame = QFrame(self.page_widgets)
-        self.frame.setObjectName(u"frame")
-        self.frame.setStyleSheet(u"border-radius: 5px;")
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_15 = QVBoxLayout(self.frame)
-        self.verticalLayout_15.setSpacing(0)
-        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
-        self.verticalLayout_15.setContentsMargins(0, 0, 0, 0)
-        self.frame_div_content_1 = QFrame(self.frame)
-        self.frame_div_content_1.setObjectName(u"frame_div_content_1")
-        self.frame_div_content_1.setMinimumSize(QSize(0, 110))
-        self.frame_div_content_1.setMaximumSize(QSize(16777215, 110))
-        self.frame_div_content_1.setStyleSheet(u"background-color: rgb(41, 45, 56);\n"
-"border-radius: 5px;\n"
-"")
-        self.frame_div_content_1.setFrameShape(QFrame.NoFrame)
-        self.frame_div_content_1.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_7 = QVBoxLayout(self.frame_div_content_1)
-        self.verticalLayout_7.setSpacing(0)
-        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.frame_title_wid_1 = QFrame(self.frame_div_content_1)
-        self.frame_title_wid_1.setObjectName(u"frame_title_wid_1")
-        self.frame_title_wid_1.setMaximumSize(QSize(16777215, 35))
-        self.frame_title_wid_1.setStyleSheet(u"background-color: rgb(39, 44, 54);")
-        self.frame_title_wid_1.setFrameShape(QFrame.StyledPanel)
-        self.frame_title_wid_1.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_8 = QVBoxLayout(self.frame_title_wid_1)
-        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.labelBoxBlenderInstalation = QLabel(self.frame_title_wid_1)
-        self.labelBoxBlenderInstalation.setObjectName(u"labelBoxBlenderInstalation")
-        self.labelBoxBlenderInstalation.setFont(font1)
-        self.labelBoxBlenderInstalation.setStyleSheet(u"")
-
-        self.verticalLayout_8.addWidget(self.labelBoxBlenderInstalation)
-
-
-        self.verticalLayout_7.addWidget(self.frame_title_wid_1)
-
-        self.frame_content_wid_1 = QFrame(self.frame_div_content_1)
-        self.frame_content_wid_1.setObjectName(u"frame_content_wid_1")
-        self.frame_content_wid_1.setFrameShape(QFrame.NoFrame)
-        self.frame_content_wid_1.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_9 = QHBoxLayout(self.frame_content_wid_1)
-        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
-        self.gridLayout = QGridLayout()
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setContentsMargins(-1, -1, -1, 0)
-        self.lineEdit = QLineEdit(self.frame_content_wid_1)
-        self.lineEdit.setObjectName(u"lineEdit")
-        self.lineEdit.setMinimumSize(QSize(0, 30))
-        self.lineEdit.setStyleSheet(u"QLineEdit {\n"
-"	background-color: rgb(27, 29, 35);\n"
-"	border-radius: 5px;\n"
-"	border: 2px solid rgb(27, 29, 35);\n"
-"	padding-left: 10px;\n"
-"}\n"
-"QLineEdit:hover {\n"
-"	border: 2px solid rgb(64, 71, 88);\n"
-"}\n"
-"QLineEdit:focus {\n"
-"	border: 2px solid rgb(91, 101, 124);\n"
-"}")
-
-        self.gridLayout.addWidget(self.lineEdit, 0, 0, 1, 1)
-
-        self.pushButton = QPushButton(self.frame_content_wid_1)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setMinimumSize(QSize(150, 30))
-        font8 = QFont()
-        font8.setFamily(u"Segoe UI")
-        font8.setPointSize(9)
-        self.pushButton.setFont(font8)
-        self.pushButton.setStyleSheet(u"QPushButton {\n"
+        font5001.setPointSize(15)
+        self.pushButton_load.setFont(font5001)
+        self.pushButton_load.setStyleSheet(u"QPushButton {\n"
 "	border: 2px solid rgb(52, 59, 72);\n"
 "	border-radius: 5px;	\n"
 "	background-color: rgb(52, 59, 72);\n"
@@ -1157,396 +1264,83 @@ class Ui_MainWindow(object):
 "	background-color: rgb(35, 40, 49);\n"
 "	border: 2px solid rgb(43, 50, 61);\n"
 "}")
-        icon3 = QIcon()
-        icon3.addFile(u":/16x16/icons/16x16/cil-folder-open.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton.setIcon(icon3)
-
-        self.gridLayout.addWidget(self.pushButton, 0, 1, 1, 1)
-
-        self.labelVersion_3 = QLabel(self.frame_content_wid_1)
-        self.labelVersion_3.setObjectName(u"labelVersion_3")
-        self.labelVersion_3.setStyleSheet(u"color: rgb(98, 103, 111);")
-        self.labelVersion_3.setLineWidth(1)
-        self.labelVersion_3.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
-
-        self.gridLayout.addWidget(self.labelVersion_3, 1, 0, 1, 2)
-
-
-        self.horizontalLayout_9.addLayout(self.gridLayout)
-
-
-        self.verticalLayout_7.addWidget(self.frame_content_wid_1)
-
-
-        self.verticalLayout_15.addWidget(self.frame_div_content_1)
-
-
-        self.verticalLayout_6.addWidget(self.frame)
-
-        self.frame_2 = QFrame(self.page_widgets)
-        self.frame_2.setObjectName(u"frame_2")
-        self.frame_2.setMinimumSize(QSize(0, 150))
-        self.frame_2.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
-"border-radius: 5px;")
-        self.frame_2.setFrameShape(QFrame.StyledPanel)
-        self.frame_2.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_11 = QVBoxLayout(self.frame_2)
-        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.gridLayout_2 = QGridLayout()
-        self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.checkBox = QCheckBox(self.frame_2)
-        self.checkBox.setObjectName(u"checkBox")
-        self.checkBox.setAutoFillBackground(False)
-        self.checkBox.setStyleSheet(u"")
-
-        self.gridLayout_2.addWidget(self.checkBox, 0, 0, 1, 1)
-
-        self.radioButton = QRadioButton(self.frame_2)
-        self.radioButton.setObjectName(u"radioButton")
-        self.radioButton.setStyleSheet(u"")
-
-        self.gridLayout_2.addWidget(self.radioButton, 0, 1, 1, 1)
-
-        self.verticalSlider = QSlider(self.frame_2)
-        self.verticalSlider.setObjectName(u"verticalSlider")
-        self.verticalSlider.setStyleSheet(u"")
-        self.verticalSlider.setOrientation(Qt.Vertical)
-
-        self.gridLayout_2.addWidget(self.verticalSlider, 0, 2, 3, 1)
-
-        self.verticalScrollBar = QScrollBar(self.frame_2)
-        self.verticalScrollBar.setObjectName(u"verticalScrollBar")
-        self.verticalScrollBar.setStyleSheet(u" QScrollBar:vertical {\n"
-"	border: none;\n"
-"    background: rgb(52, 59, 72);\n"
-"    width: 14px;\n"
-"    margin: 21px 0 21px 0;\n"
-"	border-radius: 0px;\n"
-" }")
-        self.verticalScrollBar.setOrientation(Qt.Vertical)
-
-        self.gridLayout_2.addWidget(self.verticalScrollBar, 0, 4, 3, 1)
-
-        self.scrollArea = QScrollArea(self.frame_2)
-        self.scrollArea.setObjectName(u"scrollArea")
-        self.scrollArea.setStyleSheet(u"QScrollArea {\n"
-"	border: none;\n"
-"	border-radius: 0px;\n"
+        icon5001 = QIcon()
+        icon5001.addFile(u":/16x16/icons/16x16/cil-exit-to-app.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_load.setIcon(icon5001)
+        self.pushButton_load.clicked.connect(MainWindow.profilePageButtons)
+        self.verticalLayout_5001.addWidget(self.pushButton_load, alignment=Qt.AlignCenter)
+        ##########
+        self.pushButton_save = QPushButton(self.page_profiles)
+        self.pushButton_save.setObjectName(u"pushButton_save")
+        self.pushButton_save.setMinimumSize(QSize(150, 80))
+        self.pushButton_save.setFixedWidth(600)
+        self.pushButton_save.setFont(font5001)
+        self.pushButton_save.setStyleSheet(u"QPushButton {\n"
+"	border: 2px solid rgb(52, 59, 72);\n"
+"	border-radius: 5px;	\n"
+"	background-color: rgb(52, 59, 72);\n"
 "}\n"
-"QScrollBar:horizontal {\n"
-"    border: none;\n"
-"    background: rgb(52, 59, 72);\n"
-"    height: 14px;\n"
-"    margin: 0px 21px 0 21px;\n"
-"	border-radius: 0px;\n"
+"QPushButton:hover {\n"
+"	background-color: rgb(57, 65, 80);\n"
+"	border: 2px solid rgb(61, 70, 86);\n"
 "}\n"
-" QScrollBar:vertical {\n"
-"	border: none;\n"
-"    background: rgb(52, 59, 72);\n"
-"    width: 14px;\n"
-"    margin: 21px 0 21px 0;\n"
-"	border-radius: 0px;\n"
-" }\n"
-"")
-        self.scrollArea.setFrameShape(QFrame.NoFrame)
-        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollAreaWidgetContents = QWidget()
-        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 274, 218))
-        self.horizontalLayout_11 = QHBoxLayout(self.scrollAreaWidgetContents)
-        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
-        self.plainTextEdit = QPlainTextEdit(self.scrollAreaWidgetContents)
-        self.plainTextEdit.setObjectName(u"plainTextEdit")
-        self.plainTextEdit.setMinimumSize(QSize(200, 200))
-        self.plainTextEdit.setStyleSheet(u"QPlainTextEdit {\n"
-"	background-color: rgb(27, 29, 35);\n"
-"	border-radius: 5px;\n"
-"	padding: 10px;\n"
-"}\n"
-"QPlainTextEdit:hover {\n"
-"	border: 2px solid rgb(64, 71, 88);\n"
-"}\n"
-"QPlainTextEdit:focus {\n"
-"	border: 2px solid rgb(91, 101, 124);\n"
+"QPushButton:pressed {	\n"
+"	background-color: rgb(35, 40, 49);\n"
+"	border: 2px solid rgb(43, 50, 61);\n"
 "}")
-
-        self.horizontalLayout_11.addWidget(self.plainTextEdit)
-
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-
-        self.gridLayout_2.addWidget(self.scrollArea, 0, 5, 3, 1)
-
-        self.comboBox = QComboBox(self.frame_2)
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.setObjectName(u"comboBox")
-        self.comboBox.setFont(font8)
-        self.comboBox.setAutoFillBackground(False)
-        self.comboBox.setStyleSheet(u"QComboBox{\n"
-"	background-color: rgb(27, 29, 35);\n"
-"	border-radius: 5px;\n"
-"	border: 2px solid rgb(27, 29, 35);\n"
-"	padding: 5px;\n"
-"	padding-left: 10px;\n"
+        icon5002 = QIcon()
+        icon5002.addFile(u":/16x16/icons/16x16/cil-save.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_save.setIcon(icon5002)
+        self.pushButton_save.clicked.connect(MainWindow.profilePageButtons)
+        self.verticalLayout_5001.addWidget(self.pushButton_save, alignment=Qt.AlignCenter)
+        ##########
+        self.pushButton_delete = QPushButton(self.page_profiles)
+        self.pushButton_delete.setObjectName(u"pushButton_delete")
+        self.pushButton_delete.setMinimumSize(QSize(150, 80))
+        self.pushButton_delete.setFixedWidth(600)
+        self.pushButton_delete.setFont(font5001)
+        self.pushButton_delete.setStyleSheet(u"QPushButton {\n"
+"	border: 2px solid rgb(52, 59, 72);\n"
+"	border-radius: 5px;	\n"
+"	background-color: rgb(52, 59, 72);\n"
 "}\n"
-"QComboBox:hover{\n"
-"	border: 2px solid rgb(64, 71, 88);\n"
+"QPushButton:hover {\n"
+"	background-color: rgb(57, 65, 80);\n"
+"	border: 2px solid rgb(61, 70, 86);\n"
 "}\n"
-"QComboBox QAbstractItemView {\n"
-"	color: rgb(85, 170, 255);	\n"
-"	background-color: rgb(27, 29, 35);\n"
-"	padding: 10px;\n"
-"	selection-background-color: rgb(39, 44, 54);\n"
+"QPushButton:pressed {	\n"
+"	background-color: rgb(35, 40, 49);\n"
+"	border: 2px solid rgb(43, 50, 61);\n"
 "}")
-        self.comboBox.setIconSize(QSize(16, 16))
-        self.comboBox.setFrame(True)
+        icon5003 = QIcon()
+        icon5003.addFile(u":/16x16/icons/16x16/cil-remove.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_delete.setIcon(icon5003)
+        self.pushButton_delete.clicked.connect(MainWindow.profilePageButtons)
+        self.verticalLayout_5001.addWidget(self.pushButton_delete, alignment=Qt.AlignCenter)
+        ##########
+        self.label_5001 = QLabel(self.page_profiles)
+        self.label_5001.setObjectName(u"label_5001")
+        font002 = QFont()
+        font002.setFamily(u"Segoe UI")
+        font002.setPointSize(15)
+        self.label_5001.setFont(font002)
+        self.label_5001.setFixedHeight(100)
+        self.label_5001.setAlignment(Qt.AlignCenter)
+        self.verticalLayout_5001.addWidget(self.label_5001)
+        ##########
+        self.stackedWidget.addWidget(self.page_profiles)
 
-        self.gridLayout_2.addWidget(self.comboBox, 1, 0, 1, 2)
-
-        self.horizontalScrollBar = QScrollBar(self.frame_2)
-        self.horizontalScrollBar.setObjectName(u"horizontalScrollBar")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.horizontalScrollBar.sizePolicy().hasHeightForWidth())
-        self.horizontalScrollBar.setSizePolicy(sizePolicy5)
-        self.horizontalScrollBar.setStyleSheet(u"QScrollBar:horizontal {\n"
-"    border: none;\n"
-"    background: rgb(52, 59, 72);\n"
-"    height: 14px;\n"
-"    margin: 0px 21px 0 21px;\n"
-"	border-radius: 0px;\n"
-"}\n"
-"")
-        self.horizontalScrollBar.setOrientation(Qt.Horizontal)
-
-        self.gridLayout_2.addWidget(self.horizontalScrollBar, 1, 3, 1, 1)
-
-        self.commandLinkButton = QCommandLinkButton(self.frame_2)
-        self.commandLinkButton.setObjectName(u"commandLinkButton")
-        self.commandLinkButton.setStyleSheet(u"QCommandLinkButton {	\n"
-"	color: rgb(85, 170, 255);\n"
-"	border-radius: 5px;\n"
-"	padding: 5px;\n"
-"}\n"
-"QCommandLinkButton:hover {	\n"
-"	color: rgb(210, 210, 210);\n"
-"	background-color: rgb(44, 49, 60);\n"
-"}\n"
-"QCommandLinkButton:pressed {	\n"
-"	color: rgb(210, 210, 210);\n"
-"	background-color: rgb(52, 58, 71);\n"
-"}")
-        icon4 = QIcon()
-        icon4.addFile(u":/16x16/icons/16x16/cil-link.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.commandLinkButton.setIcon(icon4)
-
-        self.gridLayout_2.addWidget(self.commandLinkButton, 1, 6, 1, 1)
-
-        self.horizontalSlider = QSlider(self.frame_2)
-        self.horizontalSlider.setObjectName(u"horizontalSlider")
-        self.horizontalSlider.setStyleSheet(u"")
-        self.horizontalSlider.setOrientation(Qt.Horizontal)
-
-        self.gridLayout_2.addWidget(self.horizontalSlider, 2, 0, 1, 2)
-
-
-        self.verticalLayout_11.addLayout(self.gridLayout_2)
-
-
-        self.verticalLayout_6.addWidget(self.frame_2)
-
-        self.frame_3 = QFrame(self.page_widgets)
-        self.frame_3.setObjectName(u"frame_3")
-        self.frame_3.setMinimumSize(QSize(0, 150))
-        self.frame_3.setFrameShape(QFrame.StyledPanel)
-        self.frame_3.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_12 = QHBoxLayout(self.frame_3)
-        self.horizontalLayout_12.setSpacing(0)
-        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
-        self.horizontalLayout_12.setContentsMargins(0, 0, 0, 0)
-        self.tableWidget = QTableWidget(self.frame_3)
-        if (self.tableWidget.columnCount() < 4):
-            self.tableWidget.setColumnCount(4)
-        __qtablewidgetitem = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(0, __qtablewidgetitem)
-        __qtablewidgetitem1 = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(1, __qtablewidgetitem1)
-        __qtablewidgetitem2 = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(2, __qtablewidgetitem2)
-        __qtablewidgetitem3 = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(3, __qtablewidgetitem3)
-        if (self.tableWidget.rowCount() < 16):
-            self.tableWidget.setRowCount(16)
-        __qtablewidgetitem4 = QTableWidgetItem()
-        __qtablewidgetitem4.setFont(font2);
-        self.tableWidget.setVerticalHeaderItem(0, __qtablewidgetitem4)
-        __qtablewidgetitem5 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(1, __qtablewidgetitem5)
-        __qtablewidgetitem6 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(2, __qtablewidgetitem6)
-        __qtablewidgetitem7 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(3, __qtablewidgetitem7)
-        __qtablewidgetitem8 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(4, __qtablewidgetitem8)
-        __qtablewidgetitem9 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(5, __qtablewidgetitem9)
-        __qtablewidgetitem10 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(6, __qtablewidgetitem10)
-        __qtablewidgetitem11 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(7, __qtablewidgetitem11)
-        __qtablewidgetitem12 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(8, __qtablewidgetitem12)
-        __qtablewidgetitem13 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(9, __qtablewidgetitem13)
-        __qtablewidgetitem14 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(10, __qtablewidgetitem14)
-        __qtablewidgetitem15 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(11, __qtablewidgetitem15)
-        __qtablewidgetitem16 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(12, __qtablewidgetitem16)
-        __qtablewidgetitem17 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(13, __qtablewidgetitem17)
-        __qtablewidgetitem18 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(14, __qtablewidgetitem18)
-        __qtablewidgetitem19 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(15, __qtablewidgetitem19)
-        __qtablewidgetitem20 = QTableWidgetItem()
-        self.tableWidget.setItem(0, 0, __qtablewidgetitem20)
-        __qtablewidgetitem21 = QTableWidgetItem()
-        self.tableWidget.setItem(0, 1, __qtablewidgetitem21)
-        __qtablewidgetitem22 = QTableWidgetItem()
-        self.tableWidget.setItem(0, 2, __qtablewidgetitem22)
-        __qtablewidgetitem23 = QTableWidgetItem()
-        self.tableWidget.setItem(0, 3, __qtablewidgetitem23)
-        self.tableWidget.setObjectName(u"tableWidget")
-        sizePolicy.setHeightForWidth(self.tableWidget.sizePolicy().hasHeightForWidth())
-        self.tableWidget.setSizePolicy(sizePolicy)
-        palette1 = QPalette()
-        palette1.setBrush(QPalette.Active, QPalette.WindowText, brush6)
-        brush15 = QBrush(QColor(39, 44, 54, 255))
-        brush15.setStyle(Qt.SolidPattern)
-        palette1.setBrush(QPalette.Active, QPalette.Button, brush15)
-        palette1.setBrush(QPalette.Active, QPalette.Text, brush6)
-        palette1.setBrush(QPalette.Active, QPalette.ButtonText, brush6)
-        palette1.setBrush(QPalette.Active, QPalette.Base, brush15)
-        palette1.setBrush(QPalette.Active, QPalette.Window, brush15)
-        brush16 = QBrush(QColor(210, 210, 210, 128))
-        brush16.setStyle(Qt.NoBrush)
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-        palette1.setBrush(QPalette.Active, QPalette.PlaceholderText, brush16)
-#endif
-        palette1.setBrush(QPalette.Inactive, QPalette.WindowText, brush6)
-        palette1.setBrush(QPalette.Inactive, QPalette.Button, brush15)
-        palette1.setBrush(QPalette.Inactive, QPalette.Text, brush6)
-        palette1.setBrush(QPalette.Inactive, QPalette.ButtonText, brush6)
-        palette1.setBrush(QPalette.Inactive, QPalette.Base, brush15)
-        palette1.setBrush(QPalette.Inactive, QPalette.Window, brush15)
-        brush17 = QBrush(QColor(210, 210, 210, 128))
-        brush17.setStyle(Qt.NoBrush)
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-        palette1.setBrush(QPalette.Inactive, QPalette.PlaceholderText, brush17)
-#endif
-        palette1.setBrush(QPalette.Disabled, QPalette.WindowText, brush6)
-        palette1.setBrush(QPalette.Disabled, QPalette.Button, brush15)
-        palette1.setBrush(QPalette.Disabled, QPalette.Text, brush6)
-        palette1.setBrush(QPalette.Disabled, QPalette.ButtonText, brush6)
-        palette1.setBrush(QPalette.Disabled, QPalette.Base, brush15)
-        palette1.setBrush(QPalette.Disabled, QPalette.Window, brush15)
-        brush18 = QBrush(QColor(210, 210, 210, 128))
-        brush18.setStyle(Qt.NoBrush)
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-        palette1.setBrush(QPalette.Disabled, QPalette.PlaceholderText, brush18)
-#endif
-        self.tableWidget.setPalette(palette1)
-        self.tableWidget.setStyleSheet(u"QTableWidget {	\n"
-"	background-color: rgb(39, 44, 54);\n"
-"	padding: 10px;\n"
-"	border-radius: 5px;\n"
-"	gridline-color: rgb(44, 49, 60);\n"
-"	border-bottom: 1px solid rgb(44, 49, 60);\n"
-"}\n"
-"QTableWidget::item{\n"
-"	border-color: rgb(44, 49, 60);\n"
-"	padding-left: 5px;\n"
-"	padding-right: 5px;\n"
-"	gridline-color: rgb(44, 49, 60);\n"
-"}\n"
-"QTableWidget::item:selected{\n"
-"	background-color: rgb(85, 170, 255);\n"
-"}\n"
-"QScrollBar:horizontal {\n"
-"    border: none;\n"
-"    background: rgb(52, 59, 72);\n"
-"    height: 14px;\n"
-"    margin: 0px 21px 0 21px;\n"
-"	border-radius: 0px;\n"
-"}\n"
-" QScrollBar:vertical {\n"
-"	border: none;\n"
-"    background: rgb(52, 59, 72);\n"
-"    width: 14px;\n"
-"    margin: 21px 0 21px 0;\n"
-"	border-radius: 0px;\n"
-" }\n"
-"QHeaderView::section{\n"
-"	Background-color: rgb(39, 44, 54);\n"
-"	max-width: 30px;\n"
-"	border: 1px solid rgb(44, 49, 60);\n"
-"	border-style: none;\n"
-"    border-bottom: 1px solid rgb(44, 49, 60);\n"
-"    border-right: 1px solid rgb(44, 49, 60);\n"
-"}\n"
-""
-                        "QTableWidget::horizontalHeader {	\n"
-"	background-color: rgb(81, 255, 0);\n"
-"}\n"
-"QHeaderView::section:horizontal\n"
-"{\n"
-"    border: 1px solid rgb(32, 34, 42);\n"
-"	background-color: rgb(27, 29, 35);\n"
-"	padding: 3px;\n"
-"	border-top-left-radius: 7px;\n"
-"    border-top-right-radius: 7px;\n"
-"}\n"
-"QHeaderView::section:vertical\n"
-"{\n"
-"    border: 1px solid rgb(44, 49, 60);\n"
-"}\n"
-"")
-        self.tableWidget.setFrameShape(QFrame.NoFrame)
-        self.tableWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.tableWidget.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
-        self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.tableWidget.setAlternatingRowColors(False)
-        self.tableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
-        self.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.tableWidget.setShowGrid(True)
-        self.tableWidget.setGridStyle(Qt.SolidLine)
-        self.tableWidget.setSortingEnabled(False)
-        self.tableWidget.horizontalHeader().setVisible(True)
-        self.tableWidget.horizontalHeader().setCascadingSectionResizes(True)
-        self.tableWidget.horizontalHeader().setDefaultSectionSize(200)
-        self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.verticalHeader().setVisible(False)
-        self.tableWidget.verticalHeader().setCascadingSectionResizes(False)
-        self.tableWidget.verticalHeader().setHighlightSections(False)
-        self.tableWidget.verticalHeader().setStretchLastSection(True)
-
-        self.horizontalLayout_12.addWidget(self.tableWidget)
-
-
-        self.verticalLayout_6.addWidget(self.frame_3)
-
-        self.stackedWidget.addWidget(self.page_widgets)
+        self.label_5002.setText(QCoreApplication.translate("MainWindow", u"Game Profiles", None))
+        self.pushButton_load.setText(QCoreApplication.translate("MainWindow", u"   Load Profile", None))
+        self.pushButton_save.setText(QCoreApplication.translate("MainWindow", u"   Save Profile", None))
+        self.pushButton_delete.setText(QCoreApplication.translate("MainWindow", u"   Delete Profile", None))
+        self.label_5001.setText(QCoreApplication.translate("MainWindow", u"", None))
         ########################################################################
         #                                                                      #
-        ## END   --------------- PAGE_WIDGET DEFINITION -----------------     ##
+        ## END   --------------- PAGE_profiles DEFINITION -----------------   ##
         #                                                                      #
         ############################## ---/--/--- ##############################
+        
 
         self.verticalLayout_9.addWidget(self.stackedWidget)
 
@@ -1620,15 +1414,6 @@ class Ui_MainWindow(object):
         QWidget.setTabOrder(self.btn_minimize, self.btn_maximize_restore)
         QWidget.setTabOrder(self.btn_maximize_restore, self.btn_close)
         QWidget.setTabOrder(self.btn_close, self.btn_toggle_menu)
-        QWidget.setTabOrder(self.btn_toggle_menu, self.checkBox)
-        QWidget.setTabOrder(self.checkBox, self.comboBox)
-        QWidget.setTabOrder(self.comboBox, self.radioButton)
-        QWidget.setTabOrder(self.radioButton, self.horizontalSlider)
-        QWidget.setTabOrder(self.horizontalSlider, self.verticalSlider)
-        QWidget.setTabOrder(self.verticalSlider, self.scrollArea)
-        QWidget.setTabOrder(self.scrollArea, self.plainTextEdit)
-        QWidget.setTabOrder(self.plainTextEdit, self.tableWidget)
-        QWidget.setTabOrder(self.tableWidget, self.commandLinkButton)
 
         self.retranslateUi(MainWindow)
 
@@ -1641,86 +1426,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.btn_toggle_menu.setText("")
-        self.label_title_bar_top.setText(QCoreApplication.translate("MainWindow", u"Main Window - Base", None))
-#if QT_CONFIG(tooltip)
-        self.btn_minimize.setToolTip(QCoreApplication.translate("MainWindow", u"Minimize", None))
-#endif // QT_CONFIG(tooltip)
-        self.btn_minimize.setText("")
-#if QT_CONFIG(tooltip)
-        self.btn_maximize_restore.setToolTip(QCoreApplication.translate("MainWindow", u"Maximize", None))
-#endif // QT_CONFIG(tooltip)
-        self.btn_maximize_restore.setText("")
-#if QT_CONFIG(tooltip)
-        self.btn_close.setToolTip(QCoreApplication.translate("MainWindow", u"Close", None))
-#endif // QT_CONFIG(tooltip)
-        self.btn_close.setText("")
-        self.label_top_info_1.setText(QCoreApplication.translate("MainWindow", u"C:\\Program Files\\Blender Foundation\\Blender 2.82", None))
-        self.label_top_info_2.setText(QCoreApplication.translate("MainWindow", u"| HOME", None))
-        self.label_user_icon.setText(QCoreApplication.translate("MainWindow", u"WM", None))
-        self.labelBoxBlenderInstalation.setText(QCoreApplication.translate("MainWindow", u"BLENDER INSTALLATION", None))
-        self.lineEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Password", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Open Blender", None))
-        self.labelVersion_3.setText(QCoreApplication.translate("MainWindow", u"Ex: C:Program FilesBlender FoundationBlender 2.82 blender.exe", None))
-        self.checkBox.setText(QCoreApplication.translate("MainWindow", u"CheckBox", None))
-        self.radioButton.setText(QCoreApplication.translate("MainWindow", u"RadioButton", None))
-        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Test 1", None))
-        self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Test 2", None))
-        self.comboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"Test 3", None))
-
-        self.commandLinkButton.setText(QCoreApplication.translate("MainWindow", u"CommandLinkButton", None))
-        self.commandLinkButton.setDescription(QCoreApplication.translate("MainWindow", u"Open External Link", None))
-        ___qtablewidgetitem = self.tableWidget.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"0", None));
-        ___qtablewidgetitem1 = self.tableWidget.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"1", None));
-        ___qtablewidgetitem2 = self.tableWidget.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"2", None));
-        ___qtablewidgetitem3 = self.tableWidget.horizontalHeaderItem(3)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"3", None));
-        ___qtablewidgetitem4 = self.tableWidget.verticalHeaderItem(0)
-        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem5 = self.tableWidget.verticalHeaderItem(1)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem6 = self.tableWidget.verticalHeaderItem(2)
-        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem7 = self.tableWidget.verticalHeaderItem(3)
-        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem8 = self.tableWidget.verticalHeaderItem(4)
-        ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem9 = self.tableWidget.verticalHeaderItem(5)
-        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem10 = self.tableWidget.verticalHeaderItem(6)
-        ___qtablewidgetitem10.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem11 = self.tableWidget.verticalHeaderItem(7)
-        ___qtablewidgetitem11.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem12 = self.tableWidget.verticalHeaderItem(8)
-        ___qtablewidgetitem12.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem13 = self.tableWidget.verticalHeaderItem(9)
-        ___qtablewidgetitem13.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem14 = self.tableWidget.verticalHeaderItem(10)
-        ___qtablewidgetitem14.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem15 = self.tableWidget.verticalHeaderItem(11)
-        ___qtablewidgetitem15.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem16 = self.tableWidget.verticalHeaderItem(12)
-        ___qtablewidgetitem16.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem17 = self.tableWidget.verticalHeaderItem(13)
-        ___qtablewidgetitem17.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem18 = self.tableWidget.verticalHeaderItem(14)
-        ___qtablewidgetitem18.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem19 = self.tableWidget.verticalHeaderItem(15)
-        ___qtablewidgetitem19.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-
-        __sortingEnabled = self.tableWidget.isSortingEnabled()
-        self.tableWidget.setSortingEnabled(False)
-        ___qtablewidgetitem20 = self.tableWidget.item(0, 0)
-        ___qtablewidgetitem20.setText(QCoreApplication.translate("MainWindow", u"Test", None));
-        ___qtablewidgetitem21 = self.tableWidget.item(0, 1)
-        ___qtablewidgetitem21.setText(QCoreApplication.translate("MainWindow", u"Text", None));
-        ___qtablewidgetitem22 = self.tableWidget.item(0, 2)
-        ___qtablewidgetitem22.setText(QCoreApplication.translate("MainWindow", u"Cell", None));
-        ___qtablewidgetitem23 = self.tableWidget.item(0, 3)
-        ___qtablewidgetitem23.setText(QCoreApplication.translate("MainWindow", u"Line", None));
-        self.tableWidget.setSortingEnabled(__sortingEnabled)
 
         self.label_credits.setText(QCoreApplication.translate("MainWindow", u"2021 ISDN Year 2 Project - INNOSPORT - Brandon, Harry, Simon, Will", None))
         self.label_version.setText(QCoreApplication.translate("MainWindow", u"v1.0.1", None))

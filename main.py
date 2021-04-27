@@ -15,10 +15,11 @@ from subprocess import Popen, PIPE
 import os
 
 runningCmd = False
-updateStatus = 'incomplete'
 
 # Keymaps
 keymapList = []
+verifyList = ['LeftHand_VerticalSwing', 'Controller_ButtonX', 'LeftLeg_Stepping', 'RightLeg_Stepping']
+corrupted = False
 # Left Hand
 leftHand_verticalSwing = 0
 # Controller
@@ -27,40 +28,6 @@ controller_buttonX = 1
 leftLeg_stepping = 2
 # Right Leg
 rightLeg_stepping = 3
-
-def writeDefaultConfig():	#Write default mappings to config.txt
-	with open('config.txt', 'w') as file:
-		file.write('LeftHand_VerticalSwing: ' + 'X' + '\n')
-		file.write('Controller_ButtonX: ' + 'Y' + '\n')
-		file.write('LeftLeg_Stepping: ' + 'W' + '\n')
-		file.write('RightLeg_Stepping: ' + 'S' + '\n')
-
-def readConfig():	#read config from config.txt and save to keymapList[]
-    global keymapList
-    if (os.path.isfile('config.txt') == False):	#if config.txt does not exist, create one with default config
-        writeDefaultConfig()
-    with open('config.txt', 'r') as file:
-        temp = file.read().splitlines()
-        for x in range(len(temp)):
-            temp[x] = temp[x].split(': ')
-        keymapList.clear()
-        for x in range(len(temp)):
-            keymapList.append(temp[x][1])
-    if (not keymapList):
-        writeDefaultConfig()
-
-def updateConfigFile():	#Save config from keymapList[] to config.txt
-	# with open('config.txt', 'w') as file:
-	# 	file.write('LeftHand_VerticalSwing: ' + keymapList[leftHand_verticalSwing] + '\n')
-	# 	file.write('Controller_ButtonX: ' + keymapList[controller_buttonX] + '\n')
-	# 	file.write('LeftLeg_Stepping: ' + keymapList[leftLeg_stepping] + '\n')
-	# 	file.write('RightLeg_Stepping: ' + keymapList[rightLeg_stepping] + '\n')
-    global keymapList
-    print(keymapList)
-
-def restoreDefault():
-	writeDefaultConfig()
-	readConfig()
 ########################################################################
 ## END - tkinter Import
 ############################## ---/--/--- ##############################
@@ -71,6 +38,7 @@ def restoreDefault():
 ########################################################################
 from ui_splash_screen import Ui_SplashScreen
 from ui_main_splash_screen import Ui_MainWindow_SS
+import time
 counter = 0
 class SplashScreen(QMainWindow):
     def __init__(self):
@@ -97,54 +65,46 @@ class SplashScreen(QMainWindow):
 
         self.show()
 
-        readConfig()
-        print(keymapList)
+        configFunctions.readConfig(self)
 
     def progress(self):
         global counter
         self.ui.progressBar.setValue(counter)
-        if counter > 100:
+        if counter == 50:
+            self.ui.label_loading.setText(QCoreApplication.translate("SplashScreen", u"<strong>Loading Config...</strong>", None))
+        if counter == 84 and main.corrupted:
+            self.ui.label_loading.setText(QCoreApplication.translate("SplashScreen", u"Config Corrupted, <strong>Restoring Defaults...</strong>", None))
+        if counter == 85 and main.corrupted:
+            time.sleep(2)
+        if counter >= 99:
             self.timer.stop()
             self.main = MainWindow()
             self.main.show()
             self.close()
-        counter += 99 #1
+        counter += 1
 ########################################################################
 ## END - Splash Screen Import
 ############################## ---/--/--- ##############################
 
-
 class MainWindow(QMainWindow):
     def __init__(self):
-        # QMainWindow.__init__(self)
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        configFunctions.readConfig(self)
 
-        ########################################################################
-        ## START - WINDOW ATTRIBUTES
-        ########################################################################
-
-        ## REMOVE ==> STANDARD TITLE BAR
         UIFunctions.removeTitleBar(True)
-
-        ## SET ==> WINDOW TITLE
         self.setWindowTitle('INNOSPORT - Keymap Settings')
         UIFunctions.labelTitle(self, 'INNOSPORT - Keymap Settings')
         UIFunctions.labelDescription(self, 'Primary Settings Controls')
 
-        ## WINDOW SIZE ==> DEFAULT SIZE
-        startSize = QSize(1000, 720)
+        startSize = QSize(1000, 600)
         self.resize(startSize)
         self.setMinimumSize(startSize)
         UIFunctions.enableMaximumSize(self, 500, 720)
 
-        ## ==> CREATE MENUS
-        ########################################################################
-        ## ==> TOGGLE MENU SIZE
         self.ui.btn_toggle_menu.clicked.connect(lambda: UIFunctions.toggleMenu(self, 180, True))
 
-        ## ==> ADD CUSTOM MENUS
         self.ui.stackedWidget.setMinimumWidth(20)
         UIFunctions.addNewMenu(self, "HOME", "btn_home", "url(:/16x16/icons/16x16/cil-home.png)", True)
         UIFunctions.addNewMenu(self, "Left Hand", "btn_leftHand", "url(:/16x16/icons/16x16/cil-x-circle.png)", True)
@@ -152,69 +112,22 @@ class MainWindow(QMainWindow):
         UIFunctions.addNewMenu(self, "Left Leg", "btn_leftLeg", "url(:/16x16/icons/16x16/cil-x-circle.png)", True)
         UIFunctions.addNewMenu(self, "Right Leg", "btn_rightLeg", "url(:/16x16/icons/16x16/cil-x-circle.png)", True)
         UIFunctions.addNewMenu(self, "Game Profiles", "btn_profiles", "url(:/16x16/icons/16x16/cil-gamepad.png)", True)
-        #temp page for design:
-        UIFunctions.addNewMenu(self, "Design Use", "btn_design", "url(:/16x16/icons/16x16/cil-x.png)", False)
 
-        # START MENU => SELECTION
         UIFunctions.selectStandardMenu(self, "btn_home")
-
-        ## ==> START PAGE
         self.ui.stackedWidget.setCurrentWidget(self.ui.page_home)
-
-        ## USER ICON ==> SHOW HIDE
         UIFunctions.userIcon(self, "INNO", "", False)
 
-
-        ## ==> MOVE WINDOW / MAXIMIZE / RESTORE
-        ########################################################################
         def moveWindow(event):
-            # IF MAXIMIZED CHANGE TO NORMAL
             if UIFunctions.returStatus() == 1:
                 UIFunctions.maximize_restore(self)
-
-            # MOVE WINDOW
             if event.buttons() == Qt.LeftButton:
                 self.move(self.pos() + event.globalPos() - self.dragPos)
                 self.dragPos = event.globalPos()
                 event.accept()
 
-        # WIDGET TO MOVE
         self.ui.frame_label_top_btns.mouseMoveEvent = moveWindow
-
-        ## ==> LOAD DEFINITIONS
-        ########################################################################
         UIFunctions.uiDefinitions(self)
 
-        ########################################################################
-        ## END - WINDOW ATTRIBUTES
-        ############################## ---/--/--- ##############################
-
-
-
-
-        ########################################################################
-        #                                                                      #
-        ## START -------------- WIDGETS FUNCTIONS/PARAMETERS ---------------- ##
-        #                                                                      #
-        ## ==> USER CODES BELLOW                                              ##
-        ########################################################################
-
-
-        ## ==> QTableWidget RARAMETERS
-        ########################################################################
-        self.ui.tableWidget.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
-
-
-
-        ########################################################################
-        #                                                                      #
-        ## END --------------- WIDGETS FUNCTIONS/PARAMETERS ----------------- ##
-        #                                                                      #
-        ############################## ---/--/--- ##############################
-
-
-        ## SHOW ==> MAIN WINDOW
-        ########################################################################
         self.show()
 
     ########################################################################
@@ -226,12 +139,12 @@ class MainWindow(QMainWindow):
 
         # PAGE HOME
         if btnWidget.objectName() == "btn_home":
-            print(keymapList)
             self.ui.stackedWidget.setCurrentWidget(self.ui.page_home)
             UIFunctions.resetStyle(self, "btn_home")
             UIFunctions.labelDescription(self, 'Primary Settings Controls')
             UIFunctions.labelPage(self, "Home")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
+            UIFunctions.updateKeymapUI(self)
             self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"", None))
 
         # PAGE LEFT HAND
@@ -241,6 +154,8 @@ class MainWindow(QMainWindow):
             UIFunctions.labelDescription(self, 'Change Keybindings For Left Hand IMU')
             UIFunctions.labelPage(self, "LEFT HAND")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
+            UIFunctions.updateKeymapUI(self)
+            self.ui.lineEdit_1001.setText(QCoreApplication.translate("MainWindow", main.keymapList[main.leftHand_verticalSwing], None))
 
         # PAGE CONTROLLER
         if btnWidget.objectName() == "btn_controller":
@@ -249,6 +164,8 @@ class MainWindow(QMainWindow):
             UIFunctions.labelDescription(self, 'Change Keybindings For Controller Input and IMU')
             UIFunctions.labelPage(self, "CONTROLLER")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
+            UIFunctions.updateKeymapUI(self)
+            self.ui.lineEdit_2001.setText(QCoreApplication.translate("MainWindow", main.keymapList[main.controller_buttonX], None))
 
         # PAGE LEFT LEG
         if btnWidget.objectName() == "btn_leftLeg":
@@ -257,6 +174,8 @@ class MainWindow(QMainWindow):
             UIFunctions.labelDescription(self, 'Change Keybindings For Left Leg IMU')
             UIFunctions.labelPage(self, "LEFT LEG")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
+            UIFunctions.updateKeymapUI(self)
+            self.ui.lineEdit_3001.setText(QCoreApplication.translate("MainWindow", main.keymapList[main.leftLeg_stepping], None))
 
         # PAGE RIGHT LEG
         if btnWidget.objectName() == "btn_rightLeg":
@@ -265,6 +184,8 @@ class MainWindow(QMainWindow):
             UIFunctions.labelDescription(self, 'Change Keybindings For Right Leg IMU')
             UIFunctions.labelPage(self, "RIGHT LEG")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
+            UIFunctions.updateKeymapUI(self)
+            self.ui.lineEdit_4001.setText(QCoreApplication.translate("MainWindow", main.keymapList[main.rightLeg_stepping], None))
 
         # PAGE WIDGETS
         if btnWidget.objectName() == "btn_profiles":
@@ -273,44 +194,57 @@ class MainWindow(QMainWindow):
             UIFunctions.labelDescription(self, 'Manage Game Profiles')
             UIFunctions.labelPage(self, "Game Profiles")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
+            UIFunctions.updateKeymapUI(self)
+            self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", u"", None))
+    ########################################################################
+    ## END --- MENUS ==> DYNAMIC MENUS FUNCTIONS
+    ############################ ---/--/--- ################################
 
-        # DESIGN USE
-        if btnWidget.objectName() == "btn_design":
-            self.ui.stackedWidget.setCurrentWidget(self.ui.page_widgets)
-            UIFunctions.resetStyle(self, "btn_design")
-            UIFunctions.labelDescription(self, '########## DESIGN USE ##########')
-            UIFunctions.labelPage(self, "########## DESIGN USE ##########")
-            btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
-
+    
+    ########################################################################
+    ## HOME PAGE ==> BUTTON FUNCTIONS
+    ########################################################################
+    def homePageButtons(self):
+        btnWidget = self.sender()
         if btnWidget.objectName() == "pushButton_confirm":
-            if (not runningCmd):
-                UIFunctions.updateSettingsOnPi(self)
+            configFunctions.updateSettingsOnPi(self)
 
         if btnWidget.objectName() == "pushButton_undo":
-            print("undo changes")
+            configFunctions.readConfig(self)
+            self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Config Restored", None))
+            self.ui.label_001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")
 
         if btnWidget.objectName() == "pushButton_restore":
-            print("undo changes")
+            configFunctions.restoreDefault(self)
+            self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Defaults Restored", None))
+            self.ui.label_001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")
+    ########################################################################
+    ## END --- HOME PAGE ==> BUTTON FUNCTIONS
+    ############################ ---/--/--- ################################
 
-    ## ==> END ##
 
     ########################################################################
-    ## START ==> APP EVENTS
+    ## PROFILE PAGE ==> BUTTON FUNCTIONS
     ########################################################################
+    def profilePageButtons(self):
+        btnWidget = self.sender()
+        if btnWidget.objectName() == "pushButton_load":
+            profileFunctions.loadProfile(self)
 
-    ## EVENT ==> MOUSE CLICK
+        if btnWidget.objectName() == "pushButton_save":
+            profileFunctions.saveProfile(self)
+
+        if btnWidget.objectName() == "pushButton_delete":
+            profileFunctions.deleteProfile(self)
     ########################################################################
+    ## END --- PROFILE PAGE ==> BUTTON FUNCTIONS
+    ############################ ---/--/--- ################################
+
     def mousePressEvent(self, event):
         self.dragPos = event.globalPos()
 
-    ## EVENT ==> RESIZE EVENT
-    ########################################################################
     def resizeEvent(self, event):
         return super(MainWindow, self).resizeEvent(event)
-
-    ########################################################################
-    ## END ==> APP EVENTS
-    ############################## ---/--/--- ##############################
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

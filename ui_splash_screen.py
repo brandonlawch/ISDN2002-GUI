@@ -93,6 +93,6 @@ class Ui_SplashScreen(object):
         SplashScreen.setWindowTitle(QCoreApplication.translate("SplashScreen", u"MainWindow", None))
         self.label_title.setText(QCoreApplication.translate("SplashScreen", u"<strong>INNOSPORT</strong>", None))
         self.label_description.setText(QCoreApplication.translate("SplashScreen", u"<strong>Keymap Settings</strong>", None))
-        self.label_loading.setText(QCoreApplication.translate("SplashScreen", u"<strong>loading...</strong>", None))
+        self.label_loading.setText(QCoreApplication.translate("SplashScreen", u"<strong>Initializing...</strong>", None))
     # retranslateUi
 
