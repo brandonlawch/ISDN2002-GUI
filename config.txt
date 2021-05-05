@@ -1,4 +1,8 @@
-LeftHand_VerticalSwing: x
-Controller_ButtonX: y
+LeftHand_VerticalSwing: h
+LeftHand_HorizontalSwing: q
+Controller_ButtonX: x
+Controller_ButtonY: y
 LeftLeg_Stepping: w
+LeftLeg_SteppingWithBtn: a
 RightLeg_Stepping: s
+RightLeg_SteppingWithBtn: j

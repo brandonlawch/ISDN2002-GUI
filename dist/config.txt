@@ -1,4 +1,0 @@
-LeftHand_VerticalSwing: x
-Controller_ButtonX: y
-LeftLeg_Stepping: w
-RightLeg_Stepping: s

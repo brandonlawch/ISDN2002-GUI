@@ -19,6 +19,11 @@ import main
 import ui_styles
 from main import *
 
+from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
+
 ## ==> GLOBALS
 GLOBAL_STATE = 0
 GLOBAL_TITLE_BAR = True
@@ -235,25 +240,64 @@ class UIFunctions(MainWindow):
         self.ui.btn_close.clicked.connect(lambda: self.close())
 
     def updateKeymapUI(self):
+        #Left Hand ==========
         if (self.ui.lineEdit_1001.isModified() and self.ui.lineEdit_1001.text()):
             main.keymapList[main.leftHand_verticalSwing] = self.ui.lineEdit_1001.text()
+        if (self.ui.lineEdit_1002.isModified() and self.ui.lineEdit_1002.text()):
+            main.keymapList[main.leftHand_horizontalSwing] = self.ui.lineEdit_1002.text()
+        #Controller ==========
         if (self.ui.lineEdit_2001.isModified() and self.ui.lineEdit_2001.text()):
             main.keymapList[main.controller_buttonX] = self.ui.lineEdit_2001.text()
+        if (self.ui.lineEdit_2002.isModified() and self.ui.lineEdit_2002.text()):
+            main.keymapList[main.controller_buttonY] = self.ui.lineEdit_2002.text()
+        #Left Leg ==========
         if (self.ui.lineEdit_3001.isModified() and self.ui.lineEdit_3001.text()):
             main.keymapList[main.leftLeg_stepping] = self.ui.lineEdit_3001.text()
+        if (self.ui.lineEdit_3002.isModified() and self.ui.lineEdit_3002.text()):
+            main.keymapList[main.leftLeg_steppingWithBtn] = self.ui.lineEdit_3002.text()
+        #Right Leg ==========
         if (self.ui.lineEdit_4001.isModified() and self.ui.lineEdit_4001.text()):
             main.keymapList[main.rightLeg_stepping] = self.ui.lineEdit_4001.text()
+        if (self.ui.lineEdit_4002.isModified() and self.ui.lineEdit_4002.text()):
+            main.keymapList[main.rightLeg_steppingWithBtn] = self.ui.lineEdit_4002.text()
+
     ########################################################################
     ## END - GUI DEFINITIONS
     ########################################################################
 
+LeftHand_VerticalSwing_default = 'h'
+LeftHand_HorizontalSwing_default = 'q'
+Controller_ButtonX_default = 'x'
+Controller_ButtonY_default = 'y'
+LeftLeg_Stepping_default = 'w'
+LeftLeg_SteppingWithBtn_default = 'a'
+RightLeg_Stepping_default = 's'
+RightLeg_SteppingWithBtn_default = 'j'
 class configFunctions(MainWindow):
-    def writeDefaultConfig(self):	#Write default mappings to config.txt
-        with open('config.txt', 'w') as file:
-            file.write('LeftHand_VerticalSwing: ' + 'x' + '\n')
-            file.write('Controller_ButtonX: ' + 'y' + '\n')
-            file.write('LeftLeg_Stepping: ' + 'w' + '\n')
-            file.write('RightLeg_Stepping: ' + 's' + '\n')
+    def writeDefaultConfig(self):  #Write default mappings to config.txt
+        if (os.path.isfile('config.txt') == False):
+            with open('config.txt', 'w') as file:
+                file.write('LeftHand_VerticalSwing: ' + LeftHand_VerticalSwing_default + '\n')
+                file.write('LeftHand_HorizontalSwing: ' + LeftHand_HorizontalSwing_default + '\n')
+                file.write('Controller_ButtonX: ' + Controller_ButtonX_default + '\n')
+                file.write('Controller_ButtonY: ' + Controller_ButtonY_default + '\n')
+                file.write('LeftLeg_Stepping: ' + LeftLeg_Stepping_default + '\n')
+                file.write('LeftLeg_SteppingWithBtn: ' + LeftLeg_SteppingWithBtn_default + '\n')
+                file.write('RightLeg_Stepping: ' + RightLeg_Stepping_default + '\n')
+                file.write('RightLeg_SteppingWithBtn: ' + RightLeg_SteppingWithBtn_default + '\n')
+        else:
+            with open('config.txt', 'r+') as file:
+                file.truncate(0)
+                file.write('LeftHand_VerticalSwing: ' + LeftHand_VerticalSwing_default + '\n')
+                file.write('LeftHand_HorizontalSwing: ' + LeftHand_HorizontalSwing_default + '\n')
+                file.write('Controller_ButtonX: ' + Controller_ButtonX_default + '\n')
+                file.write('Controller_ButtonY: ' + Controller_ButtonY_default + '\n')
+                file.write('LeftLeg_Stepping: ' + LeftLeg_Stepping_default + '\n')
+                file.write('LeftLeg_SteppingWithBtn: ' + LeftLeg_SteppingWithBtn_default + '\n')
+                file.write('RightLeg_Stepping: ' + RightLeg_Stepping_default + '\n')
+                file.write('RightLeg_SteppingWithBtn: ' + RightLeg_SteppingWithBtn_default + '\n')
+        subprocess.check_call(["attrib","+H","config.txt"])
+
 
     def readConfig(self):  #read config from config.txt and save to keymapList[]
         main.corrupted = False
@@ -267,74 +311,149 @@ class configFunctions(MainWindow):
             for x in range(len(temp)):
                 if (temp[x][0] != main.verifyList[x] or temp[x][1] == ""):
                     main.corrupted = True
-                main.keymapList.append(temp[x][1])
+                main.keymapList.append(temp[x][1][0])
         if len(main.keymapList) != len(main.verifyList):
             main.corrupted = True
         if ((not main.keymapList) or main.corrupted):
             configFunctions.writeDefaultConfig(self)
 
-    def updateConfigFile(self):	#Save config from keymapList[] to config.txt
-        with open('config.txt', 'w') as file:
-        	file.write('LeftHand_VerticalSwing: ' + main.keymapList[main.leftHand_verticalSwing] + '\n')
-        	file.write('Controller_ButtonX: ' + main.keymapList[main.controller_buttonX] + '\n')
-        	file.write('LeftLeg_Stepping: ' + main.keymapList[main.leftLeg_stepping] + '\n')
-        	file.write('RightLeg_Stepping: ' + main.keymapList[main.rightLeg_stepping] + '\n')
+    def updateConfigFile(self):  #Save config from keymapList[] to config.txt
+        if (os.path.isfile('config.txt') == False):
+            configFunctions.writeDefaultConfig(self)
+        with open('config.txt', 'r+') as file:
+            file.truncate(0)
+            file.write('LeftHand_VerticalSwing: ' + main.keymapList[main.leftHand_verticalSwing] + '\n')
+            file.write('LeftHand_HorizontalSwing: ' + main.keymapList[main.leftHand_horizontalSwing] + '\n')
+            file.write('Controller_ButtonX: ' + main.keymapList[main.controller_buttonX] + '\n')
+            file.write('Controller_ButtonY: ' + main.keymapList[main.controller_buttonY] + '\n')
+            file.write('LeftLeg_Stepping: ' + main.keymapList[main.leftLeg_stepping] + '\n')
+            file.write('LeftLeg_SteppingWithBtn: ' + main.keymapList[main.leftLeg_steppingWithBtn] + '\n')
+            file.write('RightLeg_Stepping: ' + main.keymapList[main.rightLeg_stepping] + '\n')
+            file.write('RightLeg_SteppingWithBtn: ' + main.keymapList[main.rightLeg_steppingWithBtn] + '\n')
 
     def restoreDefault(self):
-        configFunctions.writeDefaultConfig(self)
-        configFunctions.readConfig(self)
+        main.keymapList[main.leftHand_verticalSwing] = LeftHand_VerticalSwing_default
+        main.keymapList[main.leftHand_horizontalSwing] = LeftHand_HorizontalSwing_default
+        main.keymapList[main.controller_buttonX] = Controller_ButtonX_default
+        main.keymapList[main.controller_buttonY] = Controller_ButtonY_default
+        main.keymapList[main.leftLeg_stepping] = LeftLeg_Stepping_default
+        main.keymapList[main.leftLeg_steppingWithBtn] = LeftLeg_SteppingWithBtn_default
+        main.keymapList[main.rightLeg_stepping] = RightLeg_Stepping_default
+        main.keymapList[main.rightLeg_steppingWithBtn] = RightLeg_SteppingWithBtn_default
 
     def updateSettingsOnPi(self):
-        if (not main.runningCmd):
-            main.runningCmd = True
-            configFunctions.updateConfigFile(self)
-            self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Settings", None))
-            
-            main.runningCmd = True
-            process = subprocess.Popen(['scp', 'config.txt', 'pi@raspberrypi.local:/home/pi/INNOSPORT/new_config.txt'],creationflags=0x08000000)
-            try:
-                process.wait(5)
-            except subprocess.TimeoutExpired:
-                process.kill()
-            if (process.returncode != 0):
-                self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Error", None))
-                self.ui.label_001.setStyleSheet("QLabel { color : rgb(255, 15, 140) }")
-            else:
-                self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Complete", None))
-                self.ui.label_001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")
-            main.runningCmd = False
+        configFunctions.updateConfigFile(self)
+        self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Settings", None))
+        
+        main.runningCmd = True
+        process = subprocess.Popen(['scp', 'config.txt', 'pi@raspberrypi.local:/home/pi/INNOSPORT/new_config.txt'],creationflags=0x08000000)
+        try:
+            process.wait(5)
+        except subprocess.TimeoutExpired:
+            process.kill()
+        if (process.returncode != 0):
+            self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Error", None))
+            self.ui.label_001.setStyleSheet("QLabel { color : rgb(255, 15, 140) }")
+        else:
+            self.ui.label_001.setText(QCoreApplication.translate("MainWindow", u"Update Complete", None))
+            self.ui.label_001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")
 
 
 class profileFunctions(MainWindow):
         def loadProfile(self):
-            filename = QFileDialog.getOpenFileName(self,caption = "Select Profile", filter = "Profiles (*.txt)")
-            path = filename[0]
+            path = QFileDialog.getOpenFileName(self,caption = "Select Profile", filter = "Profiles (*.txt)")[0]
             if (path):
                 with open(path, 'r') as profiletxt:
                     temp = profiletxt.read().splitlines()
-                    with open('config.txt', 'w') as file:
+                    with open('config.txt', 'r+') as file:
                         for x in range(len(temp)):
                             file.write(temp[x] + '\n')
                 configFunctions.readConfig(self)
-                self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", u"Profile Loaded", None))
+                name = path.split('/')[-1].split('.')[0]
+                self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", "\"" + name + "\" Profile Loaded", None))
                 self.ui.label_5001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")
         
         def saveProfile(self):
-            filename = QFileDialog.getSaveFileName(self, caption="Save Profile", filter="Profiles (*.txt)")
-            path = filename[0]
+            path = QFileDialog.getSaveFileName(self, caption="Save Profile", filter="Profiles (*.txt)")[0]
             if (path):
                 with open(path, 'w') as file:
                     file.write('LeftHand_VerticalSwing: ' + main.keymapList[main.leftHand_verticalSwing] + '\n')
+                    file.write('LeftHand_VerticalSwing: ' + main.keymapList[main.leftHand_horizontalSwing] + '\n')
                     file.write('Controller_ButtonX: ' + main.keymapList[main.controller_buttonX] + '\n')
+                    file.write('LeftHand_VerticalSwing: ' + main.keymapList[main.controller_buttonY] + '\n')
                     file.write('LeftLeg_Stepping: ' + main.keymapList[main.leftLeg_stepping] + '\n')
+                    file.write('LeftHand_VerticalSwing: ' + main.keymapList[main.leftLeg_steppingWithBtn] + '\n')
                     file.write('RightLeg_Stepping: ' + main.keymapList[main.rightLeg_stepping] + '\n')
-                self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", u"Profile Saved", None))
+                    file.write('LeftHand_VerticalSwing: ' + main.keymapList[main.rightLeg_steppingWithBtn] + '\n')
+                name = path.split('/')[-1].split('.')[0]
+                self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", "\"" + name + "\" Profile Saved", None))
                 self.ui.label_5001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")
+                # configFiles = [f for f in os.listdir() if (os.path.splitext(f)[-1].lower() == ".txt")]
 
         def deleteProfile(self):
-            filename = QFileDialog.getOpenFileName(self,caption = "Select Profile", filter = "Profiles (*.txt)")
-            path = filename[0]
+            path = QFileDialog.getOpenFileName(self,caption = "Select Profile", filter = "Profiles (*.txt)")[0]
             if (path):
                 os.remove(path)
-                self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", u"Profile Deleted", None))
+                name = path.split('/')[-1].split('.')[0]
+                self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", "\"" + name + "\" Profile Deleted", None))
                 self.ui.label_5001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")
+
+class PyToggle(QCheckBox):
+    def __init__(
+        self,
+        width=120,
+        bg_color="#3BD8CE",
+        circle_color="#DDD",
+        active_color="#F271B1",
+        animation_curve = QEasingCurve.OutQuint,
+    ):
+        QCheckBox.__init__(self)
+        self.setFixedSize(width, 28)
+        self.setCursor(Qt.PointingHandCursor)
+        #colors
+        self.bg_color = bg_color
+        self.circleColor = circle_color
+        self.activeColor = active_color
+        #animation
+        self._circle_position = 3
+        self.animation = QPropertyAnimation(self, b"circle_position", self)
+        self.animation.setEasingCurve(animation_curve)
+        self.animation.setDuration(700)
+        self.stateChanged.connect(self.start_transition)
+
+    @Property(float)
+    def circle_position(self):
+        return self._circle_position
+
+    @circle_position.setter
+    def circle_position(self, pos):
+        self._circle_position = pos
+        self.update()
+
+    def start_transition(self, value):
+        self.animation.stop()
+        if value:
+            self.animation.setEndValue(self.width() - 26)
+        else:
+            self.animation.setEndValue(3)
+        self.animation.start()
+
+    def hitButton(self, pos: QPoint):
+        return self.contentsRect().contains(pos)
+
+    def paintEvent(self, e):
+        p = QPainter(self)
+        p.setRenderHint(QPainter.Antialiasing)
+        p.setPen(Qt.NoPen)
+        rect = QRect(0, 0, self.width(), self.height())
+        if not self.isChecked():
+            p.setBrush(QColor(self.bg_color))
+            p.drawRoundedRect(0, 0, rect.width(), rect.height(), self.height()/2, self.height()/2)
+            p.setBrush(QColor(self.circleColor))
+            p.drawEllipse(self._circle_position, 3, 22, 22)
+        else:
+            p.setBrush(QColor(self.activeColor))
+            p.drawRoundedRect(0, 0, rect.width(), rect.height(), self.height()/2, self.height()/2)
+            p.setBrush(QColor(self.circleColor))
+            p.drawEllipse(self._circle_position, 3, 22, 22)
+        p.end()

@@ -23,7 +23,8 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
 from PySide2.QtWidgets import *
 
 import files_rc
-from app_modules import *\
+from app_modules import *
+from ui_functions import PyToggle
 
 class Validator(QtGui.QValidator):
     def validate(self, string, pos):
@@ -245,23 +246,23 @@ class Ui_MainWindow(object):
 "     background: none;\n"
 " }\n"
 "\n"
-"/* CHECKBOX */\n"
-"QCheckBox::indicator {\n"
-"    border: 3px solid rgb(52, 59, 72);\n"
-"	width: 15px;\n"
-"	height: 15px;\n"
-"	border-radius: 10px;\n"
-"    background: rgb(44, 49, 60);\n"
-"}\n"
-"QCheckBox::indicator:hover {\n"
-"    border: 3px solid rgb(58, 66, 81);\n"
-"}\n"
-"QCheckBox::indicator:checked {\n"
-"    background: 3px solid rgb(52, 59, 72);\n"
-"	border: 3px solid rgb(52, 59, 72);	\n"
-"	background-image: url(:/16x16/icons/16x16/cil-check-alt.png);\n"
-"}\n"
-"\n"
+# "/* CHECKBOX */\n"
+# "QCheckBox::indicator {\n"
+# "    border: 3px solid rgb(52, 59, 72);\n"
+# "	width: 15px;\n"
+# "	height: 15px;\n"
+# "	border-radius: 10px;\n"
+# "    background: rgb(44, 49, 60);\n"
+# "}\n"
+# "QCheckBox::indicator:hover {\n"
+# "    border: 3px solid rgb(58, 66, 81);\n"
+# "}\n"
+# "QCheckBox::indicator:checked {\n"
+# "    background: 3px solid rgb(52, 59, 72);\n"
+# "	border: 3px solid rgb(52, 59, 72);	\n"
+# "	background-image: url(:/16x16/icons/16x16/cil-check-alt.png);\n"
+# "}\n"
+# "\n"
 "/* RADIO BUTTON */\n"
 "QRadioButton::indicator {\n"
 "    border: 3px solid rgb(52, 59, 72);\n"
@@ -651,7 +652,7 @@ class Ui_MainWindow(object):
         self.frame_extra_menus.setFrameShape(QFrame.NoFrame)
         self.frame_extra_menus.setFrameShadow(QFrame.Raised)
         self.layout_menu_bottom = QVBoxLayout(self.frame_extra_menus)
-        self.layout_menu_bottom.setSpacing(10)
+        self.layout_menu_bottom.setSpacing(0)
         self.layout_menu_bottom.setObjectName(u"layout_menu_bottom")
         self.layout_menu_bottom.setContentsMargins(0, 0, 0, 25)
         self.label_user_icon = QLabel(self.frame_extra_menus)
@@ -800,6 +801,31 @@ class Ui_MainWindow(object):
         self.pushButton_restore.clicked.connect(MainWindow.homePageButtons)
         self.verticalLayout_10.addWidget(self.pushButton_restore, alignment=Qt.AlignCenter)
         ##########
+        self.horizontalLayout_001 = QHBoxLayout()
+        self.horizontalLayout_001.setSpacing(0)
+        self.horizontalLayout_001.setObjectName(u"horizontalLayout_001")
+        ##########
+        font002 = QFont()
+        font002.setFamily(u"Roboto Thin")
+        font002.setPointSize(15)
+        self.label_003 = QLabel(self.page_home)
+        self.label_003.setObjectName(u"label_003")
+        self.label_003.setFont(font002)
+        self.label_003.setAlignment(Qt.AlignCenter | Qt.AlignRight)
+        self.horizontalLayout_001.addWidget(self.label_003)
+        ##########
+        self.toggle = PyToggle()
+        self.toggle.setObjectName(u"toggle")
+        self.toggle.stateChanged.connect(MainWindow.switchMode)
+        self.horizontalLayout_001.addWidget(self.toggle)
+        ##########
+        self.label_004 = QLabel(self.page_home)
+        self.label_004.setObjectName(u"label_004")
+        self.label_004.setFont(font002)
+        self.horizontalLayout_001.addWidget(self.label_004)
+        
+        self.verticalLayout_10.addLayout(self.horizontalLayout_001, alignment=Qt.AlignCenter)
+        ##########
         self.label_001 = QLabel(self.page_home)
         self.label_001.setObjectName(u"label_001")
         font002 = QFont()
@@ -817,6 +843,8 @@ class Ui_MainWindow(object):
         self.pushButton_undo.setText(QCoreApplication.translate("MainWindow", u"   Undo Changes", None))
         self.pushButton_restore.setText(QCoreApplication.translate("MainWindow", u"   Restore Defaults", None))
         self.label_001.setText(QCoreApplication.translate("MainWindow", u"", None))
+        self.label_003.setText(QCoreApplication.translate("MainWindow", u"Exercise Mode     ", None))
+        self.label_004.setText(QCoreApplication.translate("MainWindow", u"     Gaming Mode", None))
         ########################################################################
         #                                                                      #
         ## END    --------------- PAGE_HOME DEFINITION -----------------      ##
@@ -865,6 +893,7 @@ class Ui_MainWindow(object):
         font1003.setPointSize(13)
         self.lineEdit_1001 = QLineEdit(self.page_leftHand)
         self.lineEdit_1001.setObjectName(u"lineEdit_1001")
+        self.lineEdit_1001.setReadOnly(True)
         self.lineEdit_1001.setFont(font1003)
         self.lineEdit_1001.setMaxLength(1)
         self.lineEdit_1001.setValidator(self.validator)
@@ -892,8 +921,8 @@ class Ui_MainWindow(object):
         ##########
         self.lineEdit_1002 = QLineEdit(self.page_leftHand)
         self.lineEdit_1002.setObjectName(u"lineEdit_1002")
-        self.lineEdit_1002.setFont(font1003)
         self.lineEdit_1002.setReadOnly(True)
+        self.lineEdit_1002.setFont(font1003)
         self.lineEdit_1002.setMaxLength(1)
         self.lineEdit_1002.setValidator(self.validator)
         self.lineEdit_1002.setMinimumSize(QSize(0, 30))
@@ -918,7 +947,7 @@ class Ui_MainWindow(object):
         self.label_1001.setText(QCoreApplication.translate("MainWindow", u"Vertical Swing: ", None))
         self.lineEdit_1001.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
         self.label_1002.setText(QCoreApplication.translate("MainWindow", u"Horizontal Swing: ", None))
-        self.lineEdit_1002.setPlaceholderText(QCoreApplication.translate("MainWindow", u"--- Disabled ---", None))
+        self.lineEdit_1002.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
         ########################################################################
         #                                                                      #
         ## END  --------------- PAGE_LEFTHAND DEFINITION -----------------    ##
@@ -992,7 +1021,6 @@ class Ui_MainWindow(object):
         self.lineEdit_2002 = QLineEdit(self.page_controller)
         self.lineEdit_2002.setObjectName(u"lineEdit_2002")
         self.lineEdit_2002.setFont(font1003)
-        self.lineEdit_2002.setReadOnly(True)
         self.lineEdit_2002.setMaxLength(1)
         self.lineEdit_2002.setValidator(self.validator)
         self.lineEdit_2002.setMinimumSize(QSize(0, 30))
@@ -1017,7 +1045,7 @@ class Ui_MainWindow(object):
         self.label_2001.setText(QCoreApplication.translate("MainWindow", u"Button X: ", None))
         self.lineEdit_2001.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
         self.label_2002.setText(QCoreApplication.translate("MainWindow", u"Button Y: ", None))
-        self.lineEdit_2002.setPlaceholderText(QCoreApplication.translate("MainWindow", u"--- Disabled ---", None))
+        self.lineEdit_2002.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
         ########################################################################
         #                                                                      #
         ## END --------------- PAGE_CONTROLLER DEFINITION -----------------   ##
@@ -1063,6 +1091,7 @@ class Ui_MainWindow(object):
         ##########
         self.lineEdit_3001 = QLineEdit(self.page_leftLeg)
         self.lineEdit_3001.setObjectName(u"lineEdit_3001")
+        self.lineEdit_3001.setReadOnly(True)
         self.lineEdit_3001.setFont(font1003)
         self.lineEdit_3001.setMaxLength(1)
         self.lineEdit_3001.setValidator(self.validator)
@@ -1090,8 +1119,8 @@ class Ui_MainWindow(object):
         ##########
         self.lineEdit_3002 = QLineEdit(self.page_leftLeg)
         self.lineEdit_3002.setObjectName(u"lineEdit_3002")
-        self.lineEdit_3002.setFont(font1003)
         self.lineEdit_3002.setReadOnly(True)
+        self.lineEdit_3002.setFont(font1003)
         self.lineEdit_3002.setMaxLength(1)
         self.lineEdit_3002.setValidator(self.validator)
         self.lineEdit_3002.setMinimumSize(QSize(0, 30))
@@ -1115,8 +1144,8 @@ class Ui_MainWindow(object):
         self.label_3003.setText(QCoreApplication.translate("MainWindow", u"Left Leg Keymappings", None))
         self.label_3001.setText(QCoreApplication.translate("MainWindow", u"Stepping: ", None))
         self.lineEdit_3001.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
-        self.label_3002.setText(QCoreApplication.translate("MainWindow", u"Running: ", None))
-        self.lineEdit_3002.setPlaceholderText(QCoreApplication.translate("MainWindow", u"--- Disabled ---", None))
+        self.label_3002.setText(QCoreApplication.translate("MainWindow", u"Stepping With Button: ", None))
+        self.lineEdit_3002.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
         ########################################################################
         #                                                                      #
         ## END   --------------- PAGE_LEFTLEG DEFINITION -----------------    ##
@@ -1162,6 +1191,7 @@ class Ui_MainWindow(object):
         ##########
         self.lineEdit_4001 = QLineEdit(self.page_rightLeg)
         self.lineEdit_4001.setObjectName(u"lineEdit_4001")
+        self.lineEdit_4001.setReadOnly(True)
         self.lineEdit_4001.setFont(font1003)
         self.lineEdit_4001.setMaxLength(1)
         self.lineEdit_4001.setValidator(self.validator)
@@ -1189,8 +1219,8 @@ class Ui_MainWindow(object):
         ##########
         self.lineEdit_4002 = QLineEdit(self.page_rightLeg)
         self.lineEdit_4002.setObjectName(u"lineEdit_4002")
-        self.lineEdit_4002.setFont(font1003)
         self.lineEdit_4002.setReadOnly(True)
+        self.lineEdit_4002.setFont(font1003)
         self.lineEdit_4002.setMaxLength(1)
         self.lineEdit_4002.setValidator(self.validator)
         self.lineEdit_4002.setMinimumSize(QSize(0, 30))
@@ -1214,8 +1244,8 @@ class Ui_MainWindow(object):
         self.label_4003.setText(QCoreApplication.translate("MainWindow", u"Right Leg Keymappings", None))
         self.label_4001.setText(QCoreApplication.translate("MainWindow", u"Stepping: ", None))
         self.lineEdit_4001.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
-        self.label_4002.setText(QCoreApplication.translate("MainWindow", u"Running: ", None))
-        self.lineEdit_4002.setPlaceholderText(QCoreApplication.translate("MainWindow", u"--- Disabled ---", None))
+        self.label_4002.setText(QCoreApplication.translate("MainWindow", u"Stepping With Button: ", None))
+        self.lineEdit_4002.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
         ########################################################################
         #                                                                      #
         ## END   --------------- PAGE_RIGHTLEG DEFINITION -----------------   ##
@@ -1356,11 +1386,10 @@ class Ui_MainWindow(object):
         font6001 = QFont()
         # font6001.setFamily(u"Segoe UI") 
         font6001.setFamily(u"Roboto Thin")
-        font6001.setPointSize(12)
+        font6001.setPointSize(11)
         self.plainTextEdit_6001 = QPlainTextEdit(self.page_setUp)
         self.plainTextEdit_6001.setObjectName(u"plainTextEdit_6001")
         self.plainTextEdit_6001.setFont(font6001)
-        self.plainTextEdit_6001.setReadOnly(True)
         self.plainTextEdit_6001.setMinimumSize(QSize(200, 200))
         self.plainTextEdit_6001.setStyleSheet(u"QPlainTextEdit {\n"
 "	background-color: rgb(27, 29, 35);\n"
@@ -1371,21 +1400,22 @@ class Ui_MainWindow(object):
         ##########
         self.stackedWidget.addWidget(self.page_setUp)
 
-        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"This software requires a simple setup before the first use.\n\n\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"This software requires a simple setup before the first use.\n====================\n", None))
         self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"Step 1: Check If SSHKey Exist.\n", None))
-        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     In a terminal type 'ls ~/.ssh' and see if file 'id_rsa.pub' or 'id_dsa.pub' is present. If so, skip step 2.\n\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     In a terminal type ' ls ~/.ssh ' and see if file ' id_rsa.pub ' or ' id_dsa.pub '\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     is present. If so, skip step 2.\n\n", None))
         self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"Step 2: Generate SSHKey.\n", None))
-        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     Type 'ssh-keygen' and save the key in the default location by hitting 'Enter'.\n", None))
-        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     You could also skip adding a passphrase by hitting 'Enter' again.\n\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     Type ' ssh-keygen ' and save the key in the default location by hitting ' Enter '.\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     You could also skip adding a passphrase by hitting ' Enter ' again.\n\n", None))
         self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"Step 3: Create A Directory On Raspberry.\n", None))
-        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     Type the command 'ssh pi@raspberrypi.local mkdir -p .ssh'\n", None))
-        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     and supply password 'raspberry'.\n\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     Type the command ' ssh pi@raspberrypi.local mkdir -p .ssh '\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     and supply password ' raspberry '.\n\n", None))
         self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"Step 4: Copy The SSHKey To Raspberry.\n", None))
         self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     Type the command:\n", None))
-        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     'cat id_rsa.pub | ssh pi@raspberrypi.local 'cat >> .ssh/authorized_keys'\n", None))
-        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     and supply password 'raspberry'.\n\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     ' cat ~/.ssh/id_rsa.pub | ssh pi@raspberrypi.local 'cat >> .ssh/authorized_keys' '\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     and supply password ' raspberry '.\n\n", None))
         self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"Step 5: If You Are Using macOS:\n", None))
-        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     Add the SSHKey to your keychain with 'ssh-add -K ~/.ssh/id_rsa'.\n\n\n", None))
+        self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"     Add the SSHKey to your keychain with ' ssh-add -K ~/.ssh/id_rsa '.\n====================\n", None))
         self.plainTextEdit_6001.insertPlainText(QCoreApplication.translate("MainWindow", u"And setup is complete!", None))
         ########################################################################
         #                                                                      #
@@ -1480,5 +1510,5 @@ class Ui_MainWindow(object):
         self.btn_toggle_menu.setText("")
 
         self.label_credits.setText(QCoreApplication.translate("MainWindow", u"2021 ISDN Year 2 Project - INNOSPORT - Brandon, Harry, Simon, Will", None))
-        self.label_version.setText(QCoreApplication.translate("MainWindow", u"v1.0.2", None))
+        self.label_version.setText(QCoreApplication.translate("MainWindow", u"v1.0.3", None))
     # retranslateUi

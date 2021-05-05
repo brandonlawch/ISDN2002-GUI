@@ -4,7 +4,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import (QCoreApplication, QPropertyAnimation, QDate, QDateTime, QMetaObject, QObject, QPoint, QRect, QSize, QTime, QUrl, Qt, QEvent)
 from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter, QPixmap, QRadialGradient)
 from PySide2.QtWidgets import *
-from app_modules import *\
+from app_modules import * 
 
 
 ########################################################################
@@ -13,21 +13,33 @@ from app_modules import *\
 import subprocess
 from subprocess import Popen, PIPE
 import os
+from os.path import isfile
 
 runningCmd = False
 
 # Keymaps
 keymapList = []
-verifyList = ['LeftHand_VerticalSwing', 'Controller_ButtonX', 'LeftLeg_Stepping', 'RightLeg_Stepping']
+verifyList = ['LeftHand_VerticalSwing',
+'LeftHand_HorizontalSwing',
+'Controller_ButtonX',
+'Controller_ButtonY',
+'LeftLeg_Stepping',
+'LeftLeg_SteppingWithBtn',
+'RightLeg_Stepping',
+'RightLeg_SteppingWithBtn']
 corrupted = False
 # Left Hand
 leftHand_verticalSwing = 0
+leftHand_horizontalSwing = 1
 # Controller
-controller_buttonX = 1
+controller_buttonX = 2
+controller_buttonY = 3
 # Left Leg
-leftLeg_stepping = 2
+leftLeg_stepping = 4
+leftLeg_steppingWithBtn = 5
 # Right Leg
-rightLeg_stepping = 3
+rightLeg_stepping = 6
+rightLeg_steppingWithBtn = 7
 ########################################################################
 ## END - tkinter Import
 ############################## ---/--/--- ##############################
@@ -85,7 +97,7 @@ class SplashScreen(QMainWindow):
 ########################################################################
 ## END - Splash Screen Import
 ############################## ---/--/--- ##############################
-
+mode = 'exercise'
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -129,6 +141,9 @@ class MainWindow(QMainWindow):
         self.ui.frame_label_top_btns.mouseMoveEvent = moveWindow
         UIFunctions.uiDefinitions(self)
 
+        global selfVar
+        selfVar = self
+
         self.show()
 
     ########################################################################
@@ -157,6 +172,7 @@ class MainWindow(QMainWindow):
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
             UIFunctions.updateKeymapUI(self)
             self.ui.lineEdit_1001.setText(QCoreApplication.translate("MainWindow", main.keymapList[main.leftHand_verticalSwing], None))
+            self.ui.lineEdit_1002.setText(QCoreApplication.translate("MainWindow", main.keymapList[main.leftHand_horizontalSwing], None))
 
         # PAGE CONTROLLER
         if btnWidget.objectName() == "btn_controller":
@@ -167,6 +183,7 @@ class MainWindow(QMainWindow):
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
             UIFunctions.updateKeymapUI(self)
             self.ui.lineEdit_2001.setText(QCoreApplication.translate("MainWindow", main.keymapList[main.controller_buttonX], None))
+            self.ui.lineEdit_2002.setText(QCoreApplication.translate("MainWindow", main.keymapList[main.controller_buttonY], None))
 
         # PAGE LEFT LEG
         if btnWidget.objectName() == "btn_leftLeg":
@@ -177,6 +194,7 @@ class MainWindow(QMainWindow):
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
             UIFunctions.updateKeymapUI(self)
             self.ui.lineEdit_3001.setText(QCoreApplication.translate("MainWindow", main.keymapList[main.leftLeg_stepping], None))
+            self.ui.lineEdit_3002.setText(QCoreApplication.translate("MainWindow", main.keymapList[main.leftLeg_steppingWithBtn], None))
 
         # PAGE RIGHT LEG
         if btnWidget.objectName() == "btn_rightLeg":
@@ -187,6 +205,7 @@ class MainWindow(QMainWindow):
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
             UIFunctions.updateKeymapUI(self)
             self.ui.lineEdit_4001.setText(QCoreApplication.translate("MainWindow", main.keymapList[main.rightLeg_stepping], None))
+            self.ui.lineEdit_4002.setText(QCoreApplication.translate("MainWindow", main.keymapList[main.rightLeg_steppingWithBtn], None))
 
         # PAGE WIDGETS
         if btnWidget.objectName() == "btn_profiles":
@@ -205,7 +224,6 @@ class MainWindow(QMainWindow):
             UIFunctions.labelPage(self, "Set-Up")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
             UIFunctions.updateKeymapUI(self)
-            self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", u"", None))
     ########################################################################
     ## END --- MENUS ==> DYNAMIC MENUS FUNCTIONS
     ############################ ---/--/--- ################################
@@ -217,7 +235,12 @@ class MainWindow(QMainWindow):
     def homePageButtons(self):
         btnWidget = self.sender()
         if btnWidget.objectName() == "pushButton_confirm":
-            configFunctions.updateSettingsOnPi(self)
+            if not main.runningCmd:
+                main.runningCmd = True
+                configFunctions.updateSettingsOnPi(self)
+                main.runningCmd = False
+            else:
+                pass
 
         if btnWidget.objectName() == "pushButton_undo":
             configFunctions.readConfig(self)
@@ -250,6 +273,32 @@ class MainWindow(QMainWindow):
     ## END --- PROFILE PAGE ==> BUTTON FUNCTIONS
     ############################ ---/--/--- ################################
 
+    
+    ########################################################################
+    ## MODE SWITCH
+    ########################################################################
+    def switchMode(self):
+        global mode
+        if (mode == 'exercise'):
+            mode = 'gaming'
+            self.ui.lineEdit_1001.setReadOnly(False)
+            self.ui.lineEdit_1002.setReadOnly(False)
+            self.ui.lineEdit_3001.setReadOnly(False)
+            self.ui.lineEdit_3002.setReadOnly(False)
+            self.ui.lineEdit_4001.setReadOnly(False)
+            self.ui.lineEdit_4002.setReadOnly(False)
+        else:
+            mode = 'exercise'
+            self.ui.lineEdit_1001.setReadOnly(True)
+            self.ui.lineEdit_1002.setReadOnly(True)
+            self.ui.lineEdit_3001.setReadOnly(True)
+            self.ui.lineEdit_3002.setReadOnly(True)
+            self.ui.lineEdit_4001.setReadOnly(True)
+            self.ui.lineEdit_4002.setReadOnly(True)
+    ########################################################################
+    ## END --- MODE SWITCH
+    ############################ ---/--/--- ################################
+
     def mousePressEvent(self, event):
         self.dragPos = event.globalPos()
 
@@ -260,6 +309,5 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     QtGui.QFontDatabase.addApplicationFont('fonts/segoeui.ttf')
     QtGui.QFontDatabase.addApplicationFont('fonts/segoeuib.ttf')
-    # window = MainWindow()
     window = SplashScreen()
     sys.exit(app.exec_())
