@@ -200,9 +200,6 @@ class UIFunctions(MainWindow):
     ########################################################################
     ## START - GUI DEFINITIONS
     ########################################################################
-
-    ## ==> UI DEFINITIONS
-    ########################################################################
     def uiDefinitions(self):
 
         ## REMOVE ==> STANDARD TITLE BAR
@@ -348,7 +345,7 @@ class configFunctions(MainWindow):
         main.runningCmd = True
         process = subprocess.Popen(['scp', 'config.txt', 'pi@raspberrypi.local:/home/pi/INNOSPORT/new_config.txt'],creationflags=0x08000000)
         try:
-            process.wait(5)
+            process.wait(10)
         except subprocess.TimeoutExpired:
             process.kill()
         if (process.returncode != 0):
@@ -397,6 +394,7 @@ class profileFunctions(MainWindow):
                 name = path.split('/')[-1].split('.')[0]
                 self.ui.label_5001.setText(QCoreApplication.translate("MainWindow", "\"" + name + "\" Profile Deleted", None))
                 self.ui.label_5001.setStyleSheet("QLabel { color : rgb(115, 230, 223) }")
+
 
 class PyToggle(QCheckBox):
     def __init__(

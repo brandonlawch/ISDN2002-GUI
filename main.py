@@ -284,9 +284,9 @@ class MainWindow(QMainWindow):
             self.ui.lineEdit_1001.setReadOnly(False)
             self.ui.lineEdit_1002.setReadOnly(False)
             self.ui.lineEdit_3001.setReadOnly(False)
-            self.ui.lineEdit_3002.setReadOnly(False)
+            # self.ui.lineEdit_3002.setReadOnly(False)
             self.ui.lineEdit_4001.setReadOnly(False)
-            self.ui.lineEdit_4002.setReadOnly(False)
+            # self.ui.lineEdit_4002.setReadOnly(False)
         else:
             mode = 'exercise'
             self.ui.lineEdit_1001.setReadOnly(True)

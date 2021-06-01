@@ -728,8 +728,8 @@ class Ui_MainWindow(object):
         ##########
         self.pushButton_confirm = QPushButton(self.page_home)
         self.pushButton_confirm.setObjectName(u"pushButton_confirm")
-        self.pushButton_confirm.setMinimumSize(QSize(150, 80))
-        self.pushButton_confirm.setFixedWidth(600)
+        self.pushButton_confirm.setMinimumSize(QSize(130, 80))
+        self.pushButton_confirm.setFixedWidth(550)
         font001 = QFont()
         font001.setFamily(u"Segoe UI")
         font001.setPointSize(15)
@@ -755,8 +755,8 @@ class Ui_MainWindow(object):
         ##########
         self.pushButton_undo = QPushButton(self.page_home)
         self.pushButton_undo.setObjectName(u"pushButton_undo")
-        self.pushButton_undo.setMinimumSize(QSize(150, 80))
-        self.pushButton_undo.setFixedWidth(600)
+        self.pushButton_undo.setMinimumSize(QSize(130, 80))
+        self.pushButton_undo.setFixedWidth(550)
         self.pushButton_undo.setFont(font001)
         self.pushButton_undo.setStyleSheet(u"QPushButton {\n"
 "	border: 2px solid rgb(52, 59, 72);\n"
@@ -779,8 +779,8 @@ class Ui_MainWindow(object):
         ##########
         self.pushButton_restore = QPushButton(self.page_home)
         self.pushButton_restore.setObjectName(u"pushButton_restore")
-        self.pushButton_restore.setMinimumSize(QSize(150, 80))
-        self.pushButton_restore.setFixedWidth(600)
+        self.pushButton_restore.setMinimumSize(QSize(130, 80))
+        self.pushButton_restore.setFixedWidth(550)
         self.pushButton_restore.setFont(font001)
         self.pushButton_restore.setStyleSheet(u"QPushButton {\n"
 "	border: 2px solid rgb(52, 59, 72);\n"
@@ -800,6 +800,61 @@ class Ui_MainWindow(object):
         self.pushButton_restore.setIcon(icon003)
         self.pushButton_restore.clicked.connect(MainWindow.homePageButtons)
         self.verticalLayout_10.addWidget(self.pushButton_restore, alignment=Qt.AlignCenter)
+        ##########
+        self.horizontalLayout_002 = QHBoxLayout()
+        self.horizontalLayout_002.setSpacing(0)
+        self.horizontalLayout_002.setObjectName(u"horizontalLayout_002")
+        ##########
+        font004 = QFont()
+        font004.setFamily(u"Roboto Thin")
+        font004.setPointSize(15)
+        self.label_005 = QLabel(self.page_home)
+        self.label_005.setObjectName(u"label_005")
+        self.label_005.setFont(font004)
+        self.label_005.setAlignment(Qt.AlignCenter | Qt.AlignRight)
+        self.horizontalLayout_002.addWidget(self.label_005)
+        ##########
+        self.comboBox = QComboBox(self.page_home)
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.setObjectName(u"comboBox")
+        self.comboBox.setEditable(True)
+        self.comboBox.lineEdit().setAlignment(QtCore.Qt.AlignCenter)
+        self.comboBox.lineEdit().setReadOnly(True)
+        self.comboBox.setFixedWidth(200)
+        font8 = QFont()
+        font8.setFamily(u"Segoe UI")
+        font8.setPointSize(12)
+        self.comboBox.setFont(font8)
+        self.comboBox.setAutoFillBackground(False)
+        self.comboBox.setStyleSheet(u"QComboBox{\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(27, 29, 35);\n"
+"	padding: 5px;\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QComboBox:hover{\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QComboBox QAbstractItemView {\n"
+"	color: rgb(85, 170, 255);	\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	padding: 10px;\n"
+"	selection-background-color: rgb(39, 44, 54);\n"
+"}")
+        self.comboBox.setIconSize(QSize(16, 16))
+        self.comboBox.setFrame(True)
+
+        self.horizontalLayout_002.addWidget(self.comboBox)
+        ##########
+        self.label_006 = QLabel(self.page_home)
+        self.label_006.setObjectName(u"label_006")
+        self.label_006.setAlignment(Qt.AlignCenter | Qt.AlignLeft)
+        self.label_006.setFixedWidth(180)
+        self.horizontalLayout_002.addWidget(self.label_006)
+        self.verticalLayout_10.addLayout(self.horizontalLayout_002, alignment=Qt.AlignCenter)
         ##########
         self.horizontalLayout_001 = QHBoxLayout()
         self.horizontalLayout_001.setSpacing(0)
@@ -828,11 +883,10 @@ class Ui_MainWindow(object):
         ##########
         self.label_001 = QLabel(self.page_home)
         self.label_001.setObjectName(u"label_001")
-        font002 = QFont()
-        font002.setFamily(u"Segoe UI")
-        font002.setPointSize(15)
-        self.label_001.setFont(font002)
-        self.label_001.setFixedHeight(100)
+        font003 = QFont()
+        font003.setFamily(u"Segoe UI")
+        font003.setPointSize(15)
+        self.label_001.setFont(font003)
         self.label_001.setAlignment(Qt.AlignCenter)
         self.verticalLayout_10.addWidget(self.label_001)
         ##########
@@ -843,8 +897,12 @@ class Ui_MainWindow(object):
         self.pushButton_undo.setText(QCoreApplication.translate("MainWindow", u"   Undo Changes", None))
         self.pushButton_restore.setText(QCoreApplication.translate("MainWindow", u"   Restore Defaults", None))
         self.label_001.setText(QCoreApplication.translate("MainWindow", u"", None))
-        self.label_003.setText(QCoreApplication.translate("MainWindow", u"Exercise Mode     ", None))
-        self.label_004.setText(QCoreApplication.translate("MainWindow", u"     Gaming Mode", None))
+        self.label_003.setText(QCoreApplication.translate("MainWindow", u"Preset Mode     ", None))
+        self.label_004.setText(QCoreApplication.translate("MainWindow", u"     Freedom Mode", None))
+        self.label_005.setText(QCoreApplication.translate("MainWindow", u"Excercise Intensity: ", None))
+        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Relaxing", None))
+        self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Moderate", None))
+        self.comboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"Intense", None))
         ########################################################################
         #                                                                      #
         ## END    --------------- PAGE_HOME DEFINITION -----------------      ##
@@ -968,7 +1026,10 @@ class Ui_MainWindow(object):
         self.gridLayout_2001.setRowStretch(0, 2)
         self.gridLayout_2001.setRowStretch(1, 1)
         self.gridLayout_2001.setRowStretch(2, 1)
-        self.gridLayout_2001.setRowStretch(3, 6)
+        self.gridLayout_2001.setRowStretch(3, 1)
+        self.gridLayout_2001.setRowStretch(4, 1)
+        self.gridLayout_2001.setRowStretch(5, 1)
+        self.gridLayout_2001.setRowStretch(6, 3)
         self.gridLayout_2001.setColumnStretch(0, 5)
         self.gridLayout_2001.setColumnStretch(1, 2)
         self.gridLayout_2001.setColumnStretch(2, 4)
@@ -1039,6 +1100,90 @@ class Ui_MainWindow(object):
 "}")
         self.gridLayout_2001.addWidget(self.lineEdit_2002, 2, 1, 1, 2)
         ##########
+        self.label_2004 = QLabel(self.page_controller)
+        self.label_2004.setObjectName(u"label_2004")
+        self.label_2004.setFont(font2002)
+        self.label_2004.setAlignment(Qt.AlignCenter | Qt.AlignRight)
+        self.gridLayout_2001.addWidget(self.label_2004, 3, 0, 1, 1)
+        ##########
+        self.lineEdit_2003 = QLineEdit(self.page_controller)
+        self.lineEdit_2003.setObjectName(u"lineEdit_2003")
+        self.lineEdit_2003.setReadOnly(True)
+        self.lineEdit_2003.setFont(font1003)
+        self.lineEdit_2003.setMaxLength(1)
+        self.lineEdit_2003.setValidator(self.validator)
+        self.lineEdit_2003.setMinimumSize(QSize(0, 30))
+        self.lineEdit_2003.setMaximumWidth(220)
+        self.lineEdit_2003.setStyleSheet(u"QLineEdit {\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(27, 29, 35);\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.gridLayout_2001.addWidget(self.lineEdit_2003, 3, 1, 1, 2)
+        ##########
+        self.label_2005 = QLabel(self.page_controller)
+        self.label_2005.setObjectName(u"label_2005")
+        self.label_2005.setFont(font2002)
+        self.label_2005.setAlignment(Qt.AlignCenter | Qt.AlignRight)
+        self.gridLayout_2001.addWidget(self.label_2005, 4, 0, 1, 1)
+        ##########
+        self.lineEdit_2004 = QLineEdit(self.page_controller)
+        self.lineEdit_2004.setObjectName(u"lineEdit_2004")
+        self.lineEdit_2004.setReadOnly(True)
+        self.lineEdit_2004.setFont(font1003)
+        self.lineEdit_2004.setMaxLength(1)
+        self.lineEdit_2004.setValidator(self.validator)
+        self.lineEdit_2004.setMinimumSize(QSize(0, 30))
+        self.lineEdit_2004.setMaximumWidth(220)
+        self.lineEdit_2004.setStyleSheet(u"QLineEdit {\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(27, 29, 35);\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.gridLayout_2001.addWidget(self.lineEdit_2004, 4, 1, 1, 2)
+        ##########
+        self.label_2006 = QLabel(self.page_controller)
+        self.label_2006.setObjectName(u"label_2006")
+        self.label_2006.setFont(font2002)
+        self.label_2006.setAlignment(Qt.AlignCenter | Qt.AlignRight)
+        self.gridLayout_2001.addWidget(self.label_2006, 5, 0, 1, 1)
+        ##########
+        self.lineEdit_2005 = QLineEdit(self.page_controller)
+        self.lineEdit_2005.setObjectName(u"lineEdit_2005")
+        self.lineEdit_2005.setReadOnly(True)
+        self.lineEdit_2005.setFont(font1003)
+        self.lineEdit_2005.setMaxLength(1)
+        self.lineEdit_2005.setValidator(self.validator)
+        self.lineEdit_2005.setMinimumSize(QSize(0, 30))
+        self.lineEdit_2005.setMaximumWidth(220)
+        self.lineEdit_2005.setStyleSheet(u"QLineEdit {\n"
+"	background-color: rgb(27, 29, 35);\n"
+"	border-radius: 5px;\n"
+"	border: 2px solid rgb(27, 29, 35);\n"
+"	padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"	border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"	border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.gridLayout_2001.addWidget(self.lineEdit_2005, 5, 1, 1, 2)
+        ##########
         self.stackedWidget.addWidget(self.page_controller)
 
         self.label_2003.setText(QCoreApplication.translate("MainWindow", u"Controller Keymappings", None))
@@ -1046,6 +1191,12 @@ class Ui_MainWindow(object):
         self.lineEdit_2001.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
         self.label_2002.setText(QCoreApplication.translate("MainWindow", u"Button Y: ", None))
         self.lineEdit_2002.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
+        self.label_2004.setText(QCoreApplication.translate("MainWindow", u"Button A: ", None))
+        self.lineEdit_2003.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
+        self.label_2005.setText(QCoreApplication.translate("MainWindow", u"Trigger 1: ", None))
+        self.lineEdit_2004.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
+        self.label_2006.setText(QCoreApplication.translate("MainWindow", u"Trigger 2: ", None))
+        self.lineEdit_2005.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your Keymapping", None))
         ########################################################################
         #                                                                      #
         ## END --------------- PAGE_CONTROLLER DEFINITION -----------------   ##
@@ -1450,7 +1601,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7.setContentsMargins(10, 0, 10, 0)
         self.label_credits = QLabel(self.frame_label_bottom)
         self.label_credits.setObjectName(u"label_credits")
-        self.label_credits.setFont(font2)
+        font_cred = QFont()
+        font_cred.setPointSize(12)
+        self.label_credits.setFont(font_cred)
         self.label_credits.setStyleSheet(u"color: rgb(98, 103, 111);")
 
         self.horizontalLayout_7.addWidget(self.label_credits)
@@ -1510,5 +1663,5 @@ class Ui_MainWindow(object):
         self.btn_toggle_menu.setText("")
 
         self.label_credits.setText(QCoreApplication.translate("MainWindow", u"2021 ISDN Year 2 Project - INNOSPORT - Brandon, Harry, Simon, Will", None))
-        self.label_version.setText(QCoreApplication.translate("MainWindow", u"v1.0.3", None))
+        self.label_version.setText(QCoreApplication.translate("MainWindow", u"v1.1.0", None))
     # retranslateUi
